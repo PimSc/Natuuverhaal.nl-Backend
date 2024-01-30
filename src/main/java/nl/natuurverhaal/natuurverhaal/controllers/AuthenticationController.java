@@ -14,14 +14,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+//@CrossOrigin Geeft aan dat Cross-Origin Resource Sharing (CORS) is ingeschakeld,
 @CrossOrigin
 @RestController
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
+    //Contructor om Spring bean te injecteren
 
+    private final AuthenticationManager authenticationManager;
+    //Contructor om Spring bean te injecteren
     private final CustomUserDetailsService userDetailsService;
 
+    //Contructor om Spring bean te injecteren
     private final JwtUtil jwtUtl;
 
     public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JwtUtil jwtUtl) {
@@ -31,28 +35,27 @@ public class AuthenticationController {
     }
 
 
-    /*
-        Deze methode geeft de principal (basis user gegevens) terug van de ingelogde gebruiker
-    */
+    //Deze methode geeft de principal (basis user gegevens) terug van de ingelogde gebruiker
     @GetMapping(value = "/authenticated")
     public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
         return ResponseEntity.ok().body(principal);
     }
 
-    /*
-    Deze methode geeft het JWT token terug wanneer de gebruiker de juiste inloggegevens op geeft.
-     */
+
+    //Deze methode geeft het JWT token terug wanneer de gebruiker de juiste inloggegevens op geeft.
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
         String username = authenticationRequest.getUsername();
         String password = authenticationRequest.getPassword();
 
+        //De methode probeert de authenticatie uit te voeren met de ingevoerde inloggegevens.
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
         }
+        //Deze code retourneert een BadCredentialsException wanneer de authenticatie niet lukt.
         catch (BadCredentialsException ex) {
             throw new Exception("Incorrect username or password", ex);
         }
