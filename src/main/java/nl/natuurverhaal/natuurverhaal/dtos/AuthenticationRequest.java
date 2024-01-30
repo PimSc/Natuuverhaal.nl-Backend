@@ -1,5 +1,15 @@
 package nl.natuurverhaal.natuurverhaal.dtos;
 
+//De AuthenticationRequest DTO wordt gebruikt om gebruikersnaam en wachtwoordgegevens
+// over te brengen bij het authenticeren van een gebruiker. De DTO bevat twee velden:
+// een gebruikersnaam en een wachtwoord.
+
+// Deze DTO wordt gebruikt bij het ontvangen van gegevens van een client (bijvoorbeeld een front-end applicatie)
+// wanneer een gebruiker probeert in te loggen.
+
+// Het biedt een gestructureerde manier om gebruikersreferenties over te dragen naar het authenticatiesysteem van de applicatie.
+
+
 public class AuthenticationRequest {
 
     private String username;

@@ -1,5 +1,9 @@
 package nl.natuurverhaal.natuurverhaal.dtos;
 
+
+//UserDTO basisfunctionaliteit voor gebruikersbeheer
+
+
 import nl.natuurverhaal.natuurverhaal.models.Authority;
 
 import java.util.Set;
@@ -13,6 +17,7 @@ public class UserDto {
     public String email;
     public Set<Authority> authorities;
 
+//    Getter methodes om de gegevens op te halen
     public String getUsername() {
         return username;
     }
@@ -32,6 +37,8 @@ public class UserDto {
     public String getEmail() {
         return email;
     }
+
+//    Er zijn setter-methoden voor elk veld. Deze methoden worden gebruikt om de waarden van de velden in te stellen.
 
     public Set<Authority> getAuthorities() {
         return authorities;

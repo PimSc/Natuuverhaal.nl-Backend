@@ -1,5 +1,8 @@
 package nl.natuurverhaal.natuurverhaal.dtos;
 
+
+//Deze DTO wordt gebruikt om een JWT (JSON Web Token) als respons van een authenticatieverzoek terug te sturen naar de client
+
 public class AuthenticationResponse {
 
     private final String jwt;
