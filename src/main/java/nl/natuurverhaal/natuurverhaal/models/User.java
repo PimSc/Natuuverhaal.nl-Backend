@@ -1,6 +1,6 @@
 package nl.natuurverhaal.natuurverhaal.models;
 
-//Deze klasse definieert de structuur van de gebruikersentiteit met zijn eigenschappen en de relatie met autoriteiten.
+//Deze klasse definieert de structuur van de gebruikersidentiteit met zijn eigenschappen en de relatie met autoriteiten.
 //        Het wordt gebruikt om gebruikersgegevens in de database op te slaan en te manipuleren met behulp van JPA.
 
 
@@ -44,6 +44,8 @@ public class User {
 
     // Deze 3 variabelen zijn niet verplicht.
     // Je mag ook een "String banaan;" toevoegen, als je dat graag wilt.
+
+    //@Column word gebruikt om de tabel aan te passen
     @Column(nullable = false)
     private boolean enabled = true;
 

@@ -1,4 +1,5 @@
-//UserService is verantwoordelijk voor het verwerken van gebruikersgerelateerde logica en interactie met de database
+//UserService is verantwoordelijk voor het verwerken van gebruikersgerelateerde
+// logica en interactie met de database
 
 
 
@@ -144,6 +145,10 @@ public class UserService {
     public static UserDto fromUser(User user){
 
         var dto = new UserDto();
+
+//        In de code lijkt getUsername() de
+//        gebruikersnaam terug te geven, die vaak wordt gebruikt als een unieke
+//        identificator voor een gebruiker.
 
         dto.username = user.getUsername();
         dto.password = user.getPassword();

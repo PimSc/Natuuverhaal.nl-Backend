@@ -35,7 +35,8 @@ public class UserController {
         return ResponseEntity.ok().body(userDtos);
     }
 
-//    HTTP GET-endpoint op het pad "/users/{username}". Het retourneert een enkel UserDto-object op basis van de opgegeven gebruikersnaam.
+//    HTTP GET-endpoint op het pad "/users/{username}". Het retourneert een enkel UserDto-object op basis van de
+//    opgegeven gebruikersnaam.
     @GetMapping(value = "/{username}")
     public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
 
@@ -46,7 +47,8 @@ public class UserController {
 
     }
 
-//    HTTP POST-endpoint op het pad "/users". Het creëert een nieuwe gebruiker op basis van het meegeleverde UserDto-object in het verzoek.
+//    HTTP POST-endpoint op het pad "/users". Het creëert een nieuwe gebruiker op basis van het meegeleverde
+//    UserDto-object in het verzoek.
     @PostMapping(value = "")
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
 
@@ -63,7 +65,8 @@ public class UserController {
     }
 
 //    Een HTTP PUT-endpoint op het pad "/users/{username}".
-//    Het bijwerkt een bestaande gebruiker op basis van de opgegeven gebruikersnaam en het meegeleverde UserDto-object in het verzoek.
+//    Het bijwerkt een bestaande gebruiker op basis van de opgegeven gebruikersnaam en het meegeleverde
+//    UserDto-object in het verzoek.
     @PutMapping(value = "/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
@@ -72,20 +75,23 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-//    Een HTTP DELETE-endpoint op het pad "/users/{username}". Het verwijdert een gebruiker op basis van de opgegeven gebruikersnaam.
+//    Een HTTP DELETE-endpoint op het pad "/users/{username}". Het verwijdert een gebruiker op basis van de
+//    opgegeven gebruikersnaam.
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
 
-//    Een HTTP GET-endpoint op het pad "/users/{username}/authorities". Het retourneert de autoriteiten (bijv. rollen) van een gebruiker.
+//    Een HTTP GET-endpoint op het pad "/users/{username}/authorities". Het retourneert de autoriteiten
+//    (bijv. rollen) van een gebruiker.
     @GetMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
         return ResponseEntity.ok().body(userService.getAuthorities(username));
     }
 
-//    Een HTTP POST-endpoint op het pad "/users/{username}/authorities". Het voegt een nieuwe autoriteit toe aan een gebruiker op basis van de opgegeven gebruikersnaam en de autoriteit in het verzoek
+//    Een HTTP POST-endpoint op het pad "/users/{username}/authorities". Het voegt een nieuwe autoriteit
+//    toe aan een gebruiker op basis van de opgegeven gebruikersnaam en de autoriteit in het verzoek
     @PostMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
         try {
@@ -97,7 +103,8 @@ public class UserController {
             throw new BadRequestException();
         }
     }
-//    Een HTTP DELETE-endpoint op het pad "/users/{username}/authorities/{authority}". Het verwijdert een specifieke autoriteit van een gebruiker op basis van de opgegeven gebruikersnaam en autoriteit.
+//    Een HTTP DELETE-endpoint op het pad "/users/{username}/authorities/{authority}". Het verwijdert een
+//    specifieke autoriteit van een gebruiker op basis van de opgegeven gebruikersnaam en autoriteit.
     @DeleteMapping(value = "/{username}/authorities/{authority}")
     public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         userService.removeAuthority(username, authority);
