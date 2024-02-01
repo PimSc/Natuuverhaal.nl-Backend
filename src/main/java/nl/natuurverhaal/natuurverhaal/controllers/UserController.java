@@ -49,7 +49,7 @@ public class UserController {
 
 //    HTTP POST-endpoint op het pad "/users". Het creëert een nieuwe gebruiker op basis van het meegeleverde
 //    UserDto-object in het verzoek.
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
 
         // Let op: het password van een nieuwe gebruiker wordt in deze code nog niet encrypted opgeslagen.
