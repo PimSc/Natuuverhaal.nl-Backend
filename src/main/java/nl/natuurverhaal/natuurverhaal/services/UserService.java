@@ -2,8 +2,6 @@
 // logica en interactie met de database
 
 
-
-
 //Validatie:
 //        Voeg validatie toe voor invoergegevens in de createUser-methode om te controleren of vereiste velden zijn ingevuld en of het wachtwoord sterk genoeg is.
 //
@@ -37,9 +35,6 @@
 //        Het is belangrijk om functionaliteiten toe te voegen op basis van specifieke behoeften van je applicatie en je gebruikers.
 
 
-
-
-
 package nl.natuurverhaal.natuurverhaal.services;
 
 import nl.natuurverhaal.natuurverhaal.dtos.UserDto;
@@ -50,7 +45,9 @@ import nl.natuurverhaal.natuurverhaal.repositories.UserRepository;
 import nl.natuurverhaal.natuurverhaal.utils.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +57,31 @@ import java.util.Set;
 @Service
 public class UserService {
 
-//    De constructor injecteert een instantie van UserRepository
+    public PasswordEncoder passwordEncoder;
+
+    //    De constructor injecteert een instantie van UserRepository
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+//
+//    public void AddUser(UserDto userDto) {
+//        String rawPassword = userDto.getPassword();
+//        String encodedPassword = passwordEncoder.encode(rawPassword);
+//    }
+//public PasswordEncoder passwordEncoder;
+//    public void AddUser(UserDto userDto) {
+//        String rawPassword = userDto.getPassword();
+//        String encodedPassword = passwordEncoder.encode(rawPassword);
+//
+//        // Opslaan van het versleutelde wachtwoord in de database of ergens anders
+//        userRepository.save(new User(UserDto.getUsername(), encodedPassword));
+//    }
 
 
     public List<UserDto> getUsers() {
@@ -77,24 +93,24 @@ public class UserService {
         return collection;
     }
 
-//    Haalt een specifieke gebruiker op basis van de gebruikersnaam en converteert deze naar een UserDto
+    //    Haalt een specifieke gebruiker op basis van de gebruikersnaam en converteert deze naar een UserDto
     public UserDto getUser(String username) {
         UserDto dto = new UserDto();
         Optional<User> user = userRepository.findById(username);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             dto = fromUser(user.get());
-        }else {
+        } else {
             throw new UsernameNotFoundException(username);
         }
         return dto;
     }
 
-//    Controleert of een gebruiker met de opgegeven gebruikersnaam bestaat.
+    //    Controleert of een gebruiker met de opgegeven gebruikersnaam bestaat.
     public boolean userExists(String username) {
         return userRepository.existsById(username);
     }
 
-//    Genereert een willekeurige API-sleutel, stelt deze in op de UserDto en slaat een nieuwe gebruiker op in de database. Geeft de gebruikersnaam van de aangemaakte gebruiker terug.
+    //    Genereert een willekeurige API-sleutel, stelt deze in op de UserDto en slaat een nieuwe gebruiker op in de database. Geeft de gebruikersnaam van de aangemaakte gebruiker terug.
     public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
@@ -102,12 +118,12 @@ public class UserService {
         return newUser.getUsername();
     }
 
-//    Verwijdert een gebruiker op basis van de gebruikersnaam.
+    //    Verwijdert een gebruiker op basis van de gebruikersnaam.
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
 
-//    Update het wachtwoord van een gebruiker.
+    //    Update het wachtwoord van een gebruiker.
     public void updateUser(String username, UserDto newUser) {
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
         User user = userRepository.findById(username).get();
@@ -115,7 +131,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-//    Haalt de rollen (authorities) van een gebruiker op basis van de gebruikersnaam. Gooit een
+    //    Haalt de rollen (authorities) van een gebruiker op basis van de gebruikersnaam. Gooit een
     public Set<Authority> getAuthorities(String username) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -123,7 +139,7 @@ public class UserService {
         return userDto.getAuthorities();
     }
 
-//    Voegt een nieuwe autoriteit (rol) toe aan een gebruiker.
+    //    Voegt een nieuwe autoriteit (rol) toe aan een gebruiker.
     public void addAuthority(String username, String authority) {
 
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
@@ -132,7 +148,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-//    Verwijdert een autoriteit van een gebruiker op basis van de gebruikersnaam en autoriteit.
+    //    Verwijdert een autoriteit van een gebruiker op basis van de gebruikersnaam en autoriteit.
     public void removeAuthority(String username, String authority) {
         if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
         User user = userRepository.findById(username).get();
@@ -141,8 +157,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-//    Zet een User-object om naar een UserDto
-    public static UserDto fromUser(User user){
+    //    Zet een User-object om naar een UserDto
+    public static UserDto fromUser(User user) {
 
         var dto = new UserDto();
 
@@ -160,13 +176,14 @@ public class UserService {
         return dto;
     }
 
-//    Zet een UserDto-object om naar een User.
+    //    Zet een UserDto-object om naar een User.
     public User toUser(UserDto userDto) {
 
         var user = new User();
 
         user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userDto.password));
+//        user.setPassword(userDto.getPassword());
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());

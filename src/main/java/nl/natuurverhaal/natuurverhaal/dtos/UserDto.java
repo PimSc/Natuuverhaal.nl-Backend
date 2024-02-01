@@ -52,6 +52,9 @@ public class UserDto {
         this.password = password;
     }
 
+
+
+
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
