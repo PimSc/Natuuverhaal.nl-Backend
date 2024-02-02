@@ -35,6 +35,7 @@ public class ImageDataService {
         imgData.setName(multipartFile.getName());
         imgData.setType(multipartFile.getContentType());
         imgData.setImageData(ImageUtil.compressImage(multipartFile.getBytes()));
+        imgData.setUser(user1);
 
         ImageData savedImage = imageDataRepository.save(imgData);
         user1.setImage(imgData);
