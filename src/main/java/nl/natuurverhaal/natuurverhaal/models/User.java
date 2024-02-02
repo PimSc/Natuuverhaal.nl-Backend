@@ -20,6 +20,7 @@ public class User {
 //    @Column(nullable = false, unique = true) specificeert dat username niet leeg mag zijn
 //    (nullable = false) en uniek moet zijn in de database.
     @Id
+//    mag niet leeg zijn moet uniek zijn
     @Column(nullable = false, unique = true)
     private String username;
 
