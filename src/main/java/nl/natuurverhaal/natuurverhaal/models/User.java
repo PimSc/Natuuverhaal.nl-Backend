@@ -53,6 +53,10 @@ public class User {
     @Column
     private String apikey;
 
+    @OneToOne(mappedBy = "user")
+    private ImageData imageData;
+
+
     @Column
     private String email;
 
@@ -89,4 +93,11 @@ public class User {
         this.authorities.remove(authority);
     }
 
+    public void setImage(ImageData imgData) {
+        this.imageData = imgData;
+    }
+
+        public ImageData getImageData() {
+            return imageData;
+    }
 }

@@ -65,7 +65,9 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(auth ->
                                 auth
                                         // Wanneer je deze uncomment, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
-//                .requestMatchers("/**").permitAll()
+                                        .requestMatchers("/**").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/image").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/image/{username}").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/users").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/users/{username}").permitAll()
