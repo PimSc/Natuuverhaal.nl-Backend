@@ -44,12 +44,21 @@ public class ImageDataService {
     }
 
     public byte[] downloadImage(String username) throws IOException {
-        Optional<User> user = userRepository.findById(username);
-        User user1 = user.get();
-//        if (user. isPresent()) {
-//            user1 = user.get();
-//        }
-        ImageData imageData = user1.getImageData();
-        return ImageUtil.decompressImage(imageData.getImageData());
+        Optional<User> userOptional = userRepository.findById(username);
+
+        if (userOptional.isPresent()) {
+            User user1 = userOptional.get();
+            ImageData imageData = user1.getImageData();
+
+            if (imageData != null) {
+                return ImageUtil.decompressImage(imageData.getImageData());
+            } else {
+                // Gebruiker heeft geen afbeeldingsgegevens
+                return "Gebruiker heeft geen afbeeldingsgegevens".getBytes();
+            }
+        } else {
+            // Gebruiker niet gevonden
+            return "Gebruiker niet gevonden".getBytes();
+        }
     }
 }
