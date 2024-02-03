@@ -34,17 +34,11 @@ public class User {
 //            mappedBy = "username" geeft aan dat de User-entiteit de kant is die de relatie
 //            beheert via het veld username in de Authority-entiteit.
             mappedBy = "username",
-//            cascade = CascadeType.ALL geeft aan dat wijzigingen in User
-//            (zoals toevoegen of verwijderen van Authority) moeten worden doorgegeven aan de gerelateerde Authority-entiteiten.
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-//            fetch = FetchType.EAGER specificeert dat de authorities bij
-//            het laden van een User-object onmiddellijk moeten worden opgehaald.
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    // Deze 3 variabelen zijn niet verplicht.
-    // Je mag ook een "String banaan;" toevoegen, als je dat graag wilt.
 
     //@Column word gebruikt om de tabel aan te passen
     @Column(nullable = false)
@@ -53,12 +47,14 @@ public class User {
     @Column
     private String apikey;
 
+    @Column
+    private String email;
+
     @OneToOne(mappedBy = "user")
     private ImageData imageData;
 
-
-    @Column
-    private String email;
+    @OneToOne(mappedBy = "user")
+    private UserProfile userProfile;
 
 
 //    De getters en setters worden gebruikt om toegang te krijgen tot en wijzigingen

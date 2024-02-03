@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Entity
 @Data
-
 @Table(name = "image_data")
 public class ImageData {
     @Id
