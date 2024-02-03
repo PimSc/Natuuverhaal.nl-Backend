@@ -103,6 +103,7 @@ public class UserController {
             throw new BadRequestException();
         }
     }
+
 //    Een HTTP DELETE-endpoint op het pad "/users/{username}/authorities/{authority}". Het verwijdert een
 //    specifieke autoriteit van een gebruiker op basis van de opgegeven gebruikersnaam en autoriteit.
     @DeleteMapping(value = "/{username}/authorities/{authority}")

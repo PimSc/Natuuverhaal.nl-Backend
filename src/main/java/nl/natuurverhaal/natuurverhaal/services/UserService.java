@@ -67,18 +67,6 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-//
-//    public void AddUser(UserDto userDto) {
-//        String rawPassword = userDto.getPassword();
-//        String encodedPassword = passwordEncoder.encode(rawPassword);
-//    }
-//public PasswordEncoder passwordEncoder;
-//    public void AddUser(UserDto userDto) {
-//        String rawPassword = userDto.getPassword();
-//        String encodedPassword = passwordEncoder.encode(rawPassword);
-//
 //        // Opslaan van het versleutelde wachtwoord in de database of ergens anders
 //        userRepository.save(new User(UserDto.getUsername(), encodedPassword));
 //    }
