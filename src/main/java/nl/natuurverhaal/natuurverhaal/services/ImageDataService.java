@@ -1,6 +1,5 @@
 package nl.natuurverhaal.natuurverhaal.services;
 
-import lombok.Data;
 import nl.natuurverhaal.natuurverhaal.models.ImageData;
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.repositories.ImageDataRepository;
@@ -13,9 +12,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Service
-@Data
 public class ImageDataService {
 
+//    (imageDataRepository en userRepository) worden geïnjecteerd via de constructor.
     private final ImageDataRepository imageDataRepository;
     private final UserRepository userRepository;
 
@@ -23,6 +22,7 @@ public class ImageDataService {
         this.imageDataRepository = imageDataRepository;
         this.userRepository = userRepository;
     }
+
     public String uploadImage(MultipartFile multipartFile, String username) throws IOException {
         //        Dit in een if statement zetten?
         Optional<User> user = userRepository.findById(username);
