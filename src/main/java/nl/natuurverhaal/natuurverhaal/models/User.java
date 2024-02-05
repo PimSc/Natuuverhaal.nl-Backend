@@ -5,6 +5,8 @@ package nl.natuurverhaal.natuurverhaal.models;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -92,8 +94,16 @@ public class User {
     public void setImage(ImageData imgData) {
         this.imageData = imgData;
     }
-
         public ImageData getImageData() {
             return imageData;
+    }
+
+
+
+    public void setUserProfile(UserProfile usrProfile) {
+        this.userProfile = usrProfile;
+    }
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 }

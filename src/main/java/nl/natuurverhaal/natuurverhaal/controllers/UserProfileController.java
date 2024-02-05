@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 //specificeert het basispad voor alle eindpunten in deze controller.
 @RequestMapping("/user-profile")
@@ -26,7 +28,7 @@ public class UserProfileController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<Void> updateUserProfile(@PathVariable String username, @RequestBody UserProfile userProfile) {
+    public ResponseEntity<Void> updateUserProfile(@PathVariable String username, @RequestBody UserProfile userProfile) throws IOException {
         userProfileService.updateUserProfile(username, userProfile);
         return ResponseEntity.noContent().build();
     }
