@@ -21,24 +21,18 @@ public class UserProfileService {
         this.userRepository = userRepository;
     }
 
-    public String updateUserProfile(String username, UserProfile userProfile) throws IOException {
-        Optional<User> user = userRepository.findById(username);
-        User user1 = user.get();
+    public void updateUserProfile(String username, UserProfile userProfile) throws IOException {
+        Optional<User> userOptional = userRepository.findById(username);
 
-        // Werk de eigenschappen bij met de waarden van het bijgewerkte profiel
-        UserProfile usrProfile = new UserProfile();
-        usrProfile.setEmail(userProfile.getEmail());
-        usrProfile.setName(userProfile.getName());
-        usrProfile.setRegio(userProfile.getRegio());
-        usrProfile.setBio(userProfile.getBio());
-        usrProfile.setUser(user1);
-
-        UserProfile savedProfile = userProfileRepository.save(userProfile);
-        user1.setUserProfile(usrProfile);
-        // Sla het bijgewerkte profiel op in de gebruiker
-        userRepository.save(user1);
-        return savedProfile.getName();
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            userProfile.setUser(user);
+            userProfileRepository.save(userProfile);
+        } else {
+            throw new RecordNotFoundException("Gebruiker niet gevonden met gebruikersnaam: " + username);
         }
+    }
+
 
     public UserProfile getUserProfileByUsername(String username) {
         Optional<User> userOptional = userRepository.findById(username);

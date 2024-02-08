@@ -16,7 +16,6 @@ public class UserProfile {
     private String bio;
 
     @OneToOne
-
     @JoinColumn(name = "user_username", referencedColumnName = "username")
     private User user;
 
