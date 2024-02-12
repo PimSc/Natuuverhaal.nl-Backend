@@ -41,7 +41,6 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-
     //@Column word gebruikt om de tabel aan te passen
     @Column(nullable = false)
     private boolean enabled = true;
@@ -57,6 +56,8 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
+
+
 
 
 //    De getters en setters worden gebruikt om toegang te krijgen tot en wijzigingen
