@@ -1,6 +1,5 @@
 package nl.natuurverhaal.natuurverhaal.services;
 
-import lombok.Data;
 import nl.natuurverhaal.natuurverhaal.models.ImageData;
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.repositories.ImageDataRepository;
@@ -13,9 +12,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Service
-@Data
 public class ImageDataService {
 
+//    (imageDataRepository en userRepository) worden geïnjecteerd via de constructor.
     private final ImageDataRepository imageDataRepository;
     private final UserRepository userRepository;
 
@@ -23,6 +22,7 @@ public class ImageDataService {
         this.imageDataRepository = imageDataRepository;
         this.userRepository = userRepository;
     }
+
     public String uploadImage(MultipartFile multipartFile, String username) throws IOException {
         //        Dit in een if statement zetten?
         Optional<User> user = userRepository.findById(username);
@@ -44,12 +44,31 @@ public class ImageDataService {
     }
 
     public byte[] downloadImage(String username) throws IOException {
-        Optional<User> user = userRepository.findById(username);
-        User user1 = user.get();
-//        if (user. isPresent()) {
-//            user1 = user.get();
-//        }
-        ImageData imageData = user1.getImageData();
-        return ImageUtil.decompressImage(imageData.getImageData());
+        Optional<User> userOptional = userRepository.findById(username);
+
+        if (userOptional.isPresent()) {
+            User user1 = userOptional.get();
+            ImageData imageData = user1.getImageData();
+
+            if (imageData != null) {
+                return ImageUtil.decompressImage(imageData.getImageData());
+            } else {
+                // Gebruiker heeft geen afbeeldingsgegevens
+                return "Gebruiker heeft geen afbeeldingsgegevens".getBytes();
+            }
+        } else {
+            // Gebruiker niet gevonden
+            return "Gebruiker niet gevonden".getBytes();
+        }
     }
+    public void deleteImage(User user) {
+        if (user.getImageData() != null) {
+            // Verwijder de afbeeldingsgegevens uit de database
+            imageDataRepository.delete(user.getImageData());
+            // Zet de referentie naar de afbeelding van de gebruiker op null
+            user.setImage(null);
+            userRepository.save(user);
+        }
+    }
+
 }
