@@ -12,6 +12,7 @@ import java.util.Set;
 
 //De @Entity-annotatie geeft aan dat dit een JPA-entity is, wat betekent dat het overeenkomt met een tabel in de database.
 @Entity
+@Data
 
 //De @Table(name = "users")-annotatie specificeert de naam van de database-tabel waarmee deze entiteit overeenkomt.
 @Table(name = "users")
@@ -56,6 +57,9 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
+
+    @OneToOne(mappedBy = "user")
+    private BlogPost blogPost;
 
 
 
