@@ -20,6 +20,7 @@ public class BlogPostService {
     private final BlogPostRepository blogPostRepository;
     private final UserRepository userRepository;
 
+
     public BlogPostService(BlogPostRepository blogPostRepository, UserRepository userRepository) {
         this.blogPostRepository = blogPostRepository;
         this.userRepository = userRepository;
@@ -59,11 +60,6 @@ public class BlogPostService {
         return outputBlogpostDto;
     }
 
-//    public BlogPost getBlogPost(String username, Long id) {
-//        return blogPostRepository.findByIdAndUser_Username(id, username)
-//                .orElseThrow(() -> new EntityNotFoundException("BlogPost with id " + id + " for user " + username + " not found"));
-//    }
-
 
     public OutputBlogpostDto getBlogPost(String username, Long id) {
 
@@ -80,25 +76,22 @@ public class BlogPostService {
         return outputBlogpostDto;
     }
 
+    public List<OutputBlogpostDto> getAllBlogs() {
+        List<BlogPost> blogPostList = blogPostRepository.findAll();
 
+        List<OutputBlogpostDto> outputBlogpostDtoList = new ArrayList<>();
 
-
-
-
-
-
-//    }    public BlogPost getBlogPost(String username, Long id) {
-//        User user = userRepository.findByUsername(username)
-//                .orElseThrow(() -> new EntityNotFoundException("User not found with username " + username));
-//
-//        return blogPostRepository.findByIdAndUser(id, user)
-//                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with username " + username + " and id " + id));
-//    }
-
-
-    public BlogPost getBlogPostById(Long id) {
-        return blogPostRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
+        for (BlogPost blogPost : blogPostList) {
+            OutputBlogpostDto outputBlogpostDto = new OutputBlogpostDto();
+            outputBlogpostDto.setTitle(blogPost.getTitle());
+            outputBlogpostDto.setSubtitle(blogPost.getSubtitle());
+            outputBlogpostDto.setCaption(blogPost.getCaption());
+            outputBlogpostDto.setContent(blogPost.getContent());
+            outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
+            outputBlogpostDto.setId(blogPost.getId());
+            outputBlogpostDtoList.add(outputBlogpostDto);
+        };
+        return outputBlogpostDtoList;
     }
 
 
@@ -121,3 +114,10 @@ public class BlogPostService {
         return outputBlogpostDtoList;
     }
 }
+
+
+
+//    public BlogPost getBlogPostById(Long id) {
+//        return blogPostRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
+//    }
