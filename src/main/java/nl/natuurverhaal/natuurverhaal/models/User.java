@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //De @Entity-annotatie geeft aan dat dit een JPA-entity is, wat betekent dat het overeenkomt met een tabel in de database.
@@ -58,8 +59,8 @@ public class User {
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
 
-    @OneToOne(mappedBy = "user")
-    private BlogPost blogPost;
+    @OneToMany(mappedBy = "user")
+    private List<BlogPost> blogPosts;
 
 
 

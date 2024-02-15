@@ -1,10 +1,11 @@
 package nl.natuurverhaal.natuurverhaal.controllers;
 
 
-import lombok.Data;
-import nl.natuurverhaal.natuurverhaal.models.BlogPost;
+
+
+import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
+import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.services.BlogPostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,19 +23,24 @@ public class BlogPostController {
     }
 
 
-    @GetMapping("/{username}")
-    public ResponseEntity<List<BlogPost>> getAllBlogPosts() {
-        List<BlogPost> blogPosts = blogPostService.getAllBlogPosts();
-        return ResponseEntity.ok(blogPosts);
+    @GetMapping("/{username}/{id}")
+    public ResponseEntity<OutputBlogpostDto> getBlogPost(@PathVariable("username") String username, @PathVariable("id") Long id) {
+        OutputBlogpostDto blogPost = blogPostService.getBlogPost(username, id);
+        return ResponseEntity.ok(blogPost);
     }
+
+    @GetMapping("/{username}")
+    public ResponseEntity <List<OutputBlogpostDto>> getBlogPostByUsername(@PathVariable("username") String username) {
+        List<OutputBlogpostDto> blogPost = blogPostService.getBlogPostByUsername(username);
+        return ResponseEntity.ok(blogPost);
+    }
+
 
     @PostMapping("/{username}")
-    public ResponseEntity<BlogPost> createBlogPost(@RequestBody BlogPost blogPost) {
-        BlogPost createdPost = blogPostService.createBlogPost(blogPost);
+    public ResponseEntity<OutputBlogpostDto> createBlogPost(@RequestBody InputBlogpostDto blogPost) {
+        OutputBlogpostDto createdPost = blogPostService.createBlogPost(blogPost);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
-
-
 
 
 }
