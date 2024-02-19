@@ -11,5 +11,6 @@ public class OutputBlogpostDto {
     private String caption;
     private String content;
     private String username;
+    private byte[] fileContent;
 }
 

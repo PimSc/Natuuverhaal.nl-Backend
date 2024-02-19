@@ -7,6 +7,7 @@ import nl.natuurverhaal.natuurverhaal.models.BlogPost;
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.repositories.BlogPostRepository;
 import nl.natuurverhaal.natuurverhaal.repositories.UserRepository;
+import nl.natuurverhaal.natuurverhaal.utils.ImageUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -37,26 +38,33 @@ public class BlogPostService {
         return blogPostRepository.findAll();
     }
 
-    public OutputBlogpostDto createBlogPost(InputBlogpostDto inputBlogpostDto) {
+    public OutputBlogpostDto createBlogPost(InputBlogpostDto inputBlogpostDto) throws IOException {
         BlogPost blogPost = new BlogPost();
-        blogPost.setTitle(inputBlogpostDto.getTitle());
-        blogPost.setSubtitle(inputBlogpostDto.getSubtitle());
+
         blogPost.setCaption(inputBlogpostDto.getCaption());
         blogPost.setContent(inputBlogpostDto.getContent());
+        blogPost.setSubtitle(inputBlogpostDto.getSubtitle());
+        blogPost.setTitle(inputBlogpostDto.getTitle());
+        blogPost.setImageData(inputBlogpostDto.getFile().getBytes());
+        blogPost.setImageData(ImageUtil.compressImage(inputBlogpostDto.getFile().getBytes()));
+
         if (inputBlogpostDto.getUsername()!=null) {
             User user = new User();
             user.setUsername(inputBlogpostDto.getUsername());
             blogPost.setUser(user);
         }
-//        Dit word een eigen functie
-       blogPostRepository.save(blogPost);
+
+
+        blogPostRepository.save(blogPost);
         OutputBlogpostDto outputBlogpostDto = new OutputBlogpostDto();
-        outputBlogpostDto.setTitle(blogPost.getTitle());
-        outputBlogpostDto.setSubtitle(blogPost.getSubtitle());
+
         outputBlogpostDto.setCaption(blogPost.getCaption());
         outputBlogpostDto.setContent(blogPost.getContent());
+        outputBlogpostDto.setSubtitle(blogPost.getSubtitle());
+        outputBlogpostDto.setTitle(blogPost.getTitle());
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
+        outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
         return outputBlogpostDto;
     }
 
@@ -73,6 +81,7 @@ public class BlogPostService {
         outputBlogpostDto.setContent(blogPost.getContent());
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
+        outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
         return outputBlogpostDto;
     }
 
@@ -86,6 +95,7 @@ public class BlogPostService {
             outputBlogpostDto.setTitle(blogPost.getTitle());
             outputBlogpostDto.setSubtitle(blogPost.getSubtitle());
             outputBlogpostDto.setCaption(blogPost.getCaption());
+            outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
             outputBlogpostDto.setContent(blogPost.getContent());
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());

@@ -1,5 +1,6 @@
 package nl.natuurverhaal.natuurverhaal.services;
 
+import lombok.Data;
 import nl.natuurverhaal.natuurverhaal.models.ImageData;
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.repositories.ImageDataRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 
+@Data
 @Service
 public class ImageDataService {
 
@@ -38,7 +40,7 @@ public class ImageDataService {
         imgData.setUser(user1);
 
         ImageData savedImage = imageDataRepository.save(imgData);
-        user1.setImage(imgData);
+        user1.setImageData(imgData);
         userRepository.save(user1);
         return savedImage.getName();
     }
@@ -66,14 +68,12 @@ public class ImageDataService {
             // Verwijder de afbeeldingsgegevens uit de database
             imageDataRepository.delete(user.getImageData());
             // Zet de referentie naar de afbeelding van de gebruiker op null
-            user.setImage(null);
+            user.setImageData(null);
             userRepository.save(user);
         }
     }
 
 }
-
-
 
 
 
