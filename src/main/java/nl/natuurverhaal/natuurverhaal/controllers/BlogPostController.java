@@ -3,10 +3,13 @@ package nl.natuurverhaal.natuurverhaal.controllers;
 
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.models.BlogPost;
 import nl.natuurverhaal.natuurverhaal.services.BlogPostService;
+import nl.natuurverhaal.natuurverhaal.utils.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -52,8 +56,10 @@ public class BlogPostController {
                                                             @RequestPart("caption") String caption,
                                                             @RequestPart("title") String title,
                                                             @RequestPart("subtitle") String subtitle,
-                                                            @RequestPart("content") String content) throws IOException {
-
+                                                            @RequestPart("content") String content,
+                                                            @RequestPart("categories") String categoriesJson) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Set<Category> categories = objectMapper.readValue(categoriesJson, new TypeReference<Set<Category>>() {});
         System.out.println("file: " + file);
         System.out.println("username: " + username);
         System.out.println("caption: " + caption);
@@ -64,6 +70,7 @@ public class BlogPostController {
         blogPost.setContent(content);
         blogPost.setUsername(username);
         blogPost.setFile(file);
+        blogPost.setCategories(categories);
         OutputBlogpostDto createdPost = blogPostService.createBlogPost(blogPost);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }

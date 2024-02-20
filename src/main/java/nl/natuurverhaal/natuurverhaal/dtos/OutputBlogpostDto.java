@@ -1,6 +1,9 @@
 package nl.natuurverhaal.natuurverhaal.dtos;
 
 import lombok.Data;
+import nl.natuurverhaal.natuurverhaal.utils.Category;
+
+import java.util.Set;
 
 @Data
 public class OutputBlogpostDto {
@@ -12,5 +15,6 @@ public class OutputBlogpostDto {
     private String content;
     private String username;
     private byte[] fileContent;
+    private Set<Category> categories;
 }
 

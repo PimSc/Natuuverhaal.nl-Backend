@@ -47,6 +47,7 @@ public class BlogPostService {
         blogPost.setTitle(inputBlogpostDto.getTitle());
         blogPost.setImageData(inputBlogpostDto.getFile().getBytes());
         blogPost.setImageData(ImageUtil.compressImage(inputBlogpostDto.getFile().getBytes()));
+        blogPost.setCategories(inputBlogpostDto.getCategories());
 
         if (inputBlogpostDto.getUsername()!=null) {
             User user = new User();
@@ -64,6 +65,7 @@ public class BlogPostService {
         outputBlogpostDto.setTitle(blogPost.getTitle());
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
+        outputBlogpostDto.setCategories(blogPost.getCategories());
         outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
         return outputBlogpostDto;
     }
@@ -82,6 +84,7 @@ public class BlogPostService {
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
         outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
+        outputBlogpostDto.setCategories(blogPost.getCategories());
         return outputBlogpostDto;
     }
 
@@ -99,6 +102,7 @@ public class BlogPostService {
             outputBlogpostDto.setContent(blogPost.getContent());
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());
+            outputBlogpostDto.setCategories(blogPost.getCategories());
             outputBlogpostDtoList.add(outputBlogpostDto);
         };
         return outputBlogpostDtoList;
@@ -119,6 +123,7 @@ public class BlogPostService {
             outputBlogpostDto.setContent(blogPost.getContent());
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());
+            outputBlogpostDto.setCategories(blogPost.getCategories());
             outputBlogpostDtoList.add(outputBlogpostDto);
         };
         return outputBlogpostDtoList;
