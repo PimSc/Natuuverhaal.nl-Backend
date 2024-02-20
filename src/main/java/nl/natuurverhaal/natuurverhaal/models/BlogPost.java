@@ -21,6 +21,7 @@ public class BlogPost {
     private String caption;
     private String name;
     private String type;
+    private String date;
 
     @Lob
     private byte[] imageData;

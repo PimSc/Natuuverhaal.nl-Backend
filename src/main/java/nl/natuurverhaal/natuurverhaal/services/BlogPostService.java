@@ -47,6 +47,7 @@ public class BlogPostService {
         blogPost.setTitle(inputBlogpostDto.getTitle());
         blogPost.setImageData(inputBlogpostDto.getFile().getBytes());
         blogPost.setImageData(ImageUtil.compressImage(inputBlogpostDto.getFile().getBytes()));
+        blogPost.setDate(inputBlogpostDto.getDate());
         blogPost.setCategories(inputBlogpostDto.getCategories());
 
         if (inputBlogpostDto.getUsername()!=null) {
@@ -65,6 +66,7 @@ public class BlogPostService {
         outputBlogpostDto.setTitle(blogPost.getTitle());
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
+        outputBlogpostDto.setDate(blogPost.getDate());
         outputBlogpostDto.setCategories(blogPost.getCategories());
         outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
         return outputBlogpostDto;
@@ -84,6 +86,7 @@ public class BlogPostService {
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
         outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
+        outputBlogpostDto.setDate(blogPost.getDate());
         outputBlogpostDto.setCategories(blogPost.getCategories());
         return outputBlogpostDto;
     }
@@ -103,6 +106,7 @@ public class BlogPostService {
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());
             outputBlogpostDto.setCategories(blogPost.getCategories());
+            outputBlogpostDto.setDate(blogPost.getDate());
             outputBlogpostDtoList.add(outputBlogpostDto);
         };
         return outputBlogpostDtoList;
@@ -124,15 +128,9 @@ public class BlogPostService {
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());
             outputBlogpostDto.setCategories(blogPost.getCategories());
+            outputBlogpostDto.setDate(blogPost.getDate());
             outputBlogpostDtoList.add(outputBlogpostDto);
         };
         return outputBlogpostDtoList;
     }
 }
-
-
-
-//    public BlogPost getBlogPostById(Long id) {
-//        return blogPostRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
-//    }

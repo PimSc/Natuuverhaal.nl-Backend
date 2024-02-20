@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 
@@ -50,6 +52,9 @@ public class BlogPostController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(blogPost);
     }
 
+
+
+
     @PostMapping("/{username}")
     public ResponseEntity<OutputBlogpostDto> createBlogPost(@RequestPart("file") MultipartFile file,
                                                             @RequestPart("username") String username,
@@ -60,9 +65,15 @@ public class BlogPostController {
                                                             @RequestPart("categories") String categoriesJson) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         Set<Category> categories = objectMapper.readValue(categoriesJson, new TypeReference<Set<Category>>() {});
+
+        LocalDateTime currentDateAndTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm");
+        String formattedDateTime = currentDateAndTime.format(formatter);
+
         System.out.println("file: " + file);
         System.out.println("username: " + username);
         System.out.println("caption: " + caption);
+
         InputBlogpostDto blogPost = new InputBlogpostDto();
         blogPost.setCaption(caption);
         blogPost.setTitle(title);
@@ -70,16 +81,9 @@ public class BlogPostController {
         blogPost.setContent(content);
         blogPost.setUsername(username);
         blogPost.setFile(file);
+        blogPost.setDate(formattedDateTime);
         blogPost.setCategories(categories);
         OutputBlogpostDto createdPost = blogPostService.createBlogPost(blogPost);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
-
-//    @PostMapping("/{username}")
-//    public ResponseEntity<OutputBlogpostDto> createBlogPost(@RequestBody InputBlogpostDto blogPost) {
-//        OutputBlogpostDto createdPost = blogPostService.createBlogPost(blogPost);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
-//    }
-
-
 }
