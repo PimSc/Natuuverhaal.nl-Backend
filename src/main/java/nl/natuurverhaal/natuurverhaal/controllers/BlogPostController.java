@@ -40,12 +40,6 @@ public class BlogPostController {
         return ResponseEntity.ok(blogPost);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<OutputBlogpostDto>> getAllBlogs() {
-//        List<OutputBlogpostDto> blogPost = blogPostService.getAllBlogs();
-//        return ResponseEntity.ok(blogPost);
-//    }
-
     @GetMapping
     public ResponseEntity<List<OutputBlogpostDto>> getAllBlogs() {
         List<OutputBlogpostDto> blogPost = blogPostService.getAllBlogs();
