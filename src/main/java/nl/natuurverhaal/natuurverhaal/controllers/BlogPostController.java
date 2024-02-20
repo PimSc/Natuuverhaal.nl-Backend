@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
-import nl.natuurverhaal.natuurverhaal.models.BlogPost;
 import nl.natuurverhaal.natuurverhaal.services.BlogPostService;
 import nl.natuurverhaal.natuurverhaal.utils.Category;
 import org.springframework.http.HttpStatus;
@@ -45,6 +44,7 @@ public class BlogPostController {
         List<OutputBlogpostDto> blogPost = blogPostService.getBlogPostByUsername(username);
         return ResponseEntity.ok(blogPost);
     }
+
 
     @GetMapping
     public ResponseEntity<List<OutputBlogpostDto>> getAllBlogs() {
@@ -86,4 +86,7 @@ public class BlogPostController {
         OutputBlogpostDto createdPost = blogPostService.createBlogPost(blogPost);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
+
+
+
 }

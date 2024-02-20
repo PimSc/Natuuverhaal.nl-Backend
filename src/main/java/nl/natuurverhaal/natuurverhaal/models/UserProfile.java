@@ -13,11 +13,16 @@ public class UserProfile {
     private String email;
     private String name;
     private String regio;
+
+    @Column(columnDefinition = "TEXT")
     private String bio;
+
+    @Lob
+    private byte[] imageData;
 
     @OneToOne
     @JoinColumn(name = "user_username", referencedColumnName = "username")
-    private User user;
 
+    private User user;
 
 }

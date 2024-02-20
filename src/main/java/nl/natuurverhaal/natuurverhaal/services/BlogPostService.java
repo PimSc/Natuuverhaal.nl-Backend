@@ -1,6 +1,7 @@
 package nl.natuurverhaal.natuurverhaal.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.models.BlogPost;
@@ -73,6 +74,7 @@ public class BlogPostService {
     }
 
 
+    @Transactional
     public OutputBlogpostDto getBlogPost(String username, Long id) {
 
         BlogPost blogPost = blogPostRepository.findByIdAndUser_Username(id, username)
@@ -91,6 +93,7 @@ public class BlogPostService {
         return outputBlogpostDto;
     }
 
+    @Transactional
     public List<OutputBlogpostDto> getAllBlogs() {
         List<BlogPost> blogPostList = blogPostRepository.findAll();
 
@@ -112,7 +115,7 @@ public class BlogPostService {
         return outputBlogpostDtoList;
     }
 
-
+    @Transactional
     public List<OutputBlogpostDto> getBlogPostByUsername(String username) {
         List<BlogPost> blogPostList = blogPostRepository.findByUser_Username(username)
                 .orElseThrow(() -> new EntityNotFoundException("Blog post not found with username " + username));
