@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,10 +63,12 @@ public class BlogPostController {
                                                             @RequestPart("title") String title,
                                                             @RequestPart("subtitle") String subtitle,
                                                             @RequestPart("content") String content,
-                                                            @RequestPart("categories") String categoriesJson) throws IOException {
+                                                            @RequestPart("categories") String categoriesJson)
+            throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        Set<Category> categories = objectMapper.readValue(categoriesJson, new TypeReference<Set<Category>>() {});
-
+        Set<Category> categories = new HashSet<>();
+        Category c1 = Category.valueOf(categoriesJson);
+        categories.add(c1);
         LocalDateTime currentDateAndTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDateTime = currentDateAndTime.format(formatter);
@@ -90,3 +93,6 @@ public class BlogPostController {
 
 
 }
+
+
+
