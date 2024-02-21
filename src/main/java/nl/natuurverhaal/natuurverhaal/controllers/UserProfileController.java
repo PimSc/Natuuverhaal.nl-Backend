@@ -35,7 +35,8 @@ public class UserProfileController {
                                                             @RequestPart("name") String name,
                                                             @RequestPart("regio") String regio,
                                                             @RequestPart("bio") String bio,
-                                                            @RequestPart("file") MultipartFile file) throws IOException {
+                                                            @RequestPart("file") MultipartFile file,
+                                                             @RequestPart("username") String username)  throws IOException {
         System.out.println("file: " + file);
         InputUserProfileDto userProfile = new InputUserProfileDto();
         userProfile.setEmail(email);
@@ -43,6 +44,7 @@ public class UserProfileController {
         userProfile.setRegio(regio);
         userProfile.setBio(bio);
         userProfile.setFile(file);
+        userProfile.setUsername(username);
         OutputUserProfileDto createdProfile = userProfileService.createUserProfile(userProfile);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
     }

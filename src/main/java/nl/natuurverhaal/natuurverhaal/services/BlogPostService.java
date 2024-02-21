@@ -51,6 +51,7 @@ public class BlogPostService {
         blogPost.setDate(inputBlogpostDto.getDate());
         blogPost.setCategories(inputBlogpostDto.getCategories());
 
+
         if (inputBlogpostDto.getUsername()!=null) {
             User user = new User();
             user.setUsername(inputBlogpostDto.getUsername());
@@ -130,6 +131,7 @@ public class BlogPostService {
             outputBlogpostDto.setContent(blogPost.getContent());
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());
+            outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
             outputBlogpostDto.setCategories(blogPost.getCategories());
             outputBlogpostDto.setDate(blogPost.getDate());
             outputBlogpostDtoList.add(outputBlogpostDto);

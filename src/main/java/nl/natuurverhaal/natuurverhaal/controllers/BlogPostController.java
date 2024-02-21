@@ -67,7 +67,7 @@ public class BlogPostController {
         Set<Category> categories = objectMapper.readValue(categoriesJson, new TypeReference<Set<Category>>() {});
 
         LocalDateTime currentDateAndTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDateTime = currentDateAndTime.format(formatter);
 
         System.out.println("file: " + file);
