@@ -70,7 +70,7 @@ public class BlogPostController {
         Category c1 = Category.valueOf(categoriesJson);
         categories.add(c1);
         LocalDateTime currentDateAndTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDateTime = currentDateAndTime.format(formatter);
 
         System.out.println("file: " + file);
