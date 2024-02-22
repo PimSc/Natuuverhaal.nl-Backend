@@ -24,7 +24,26 @@ public class UserProfileService {
     }
 
 
+    @Transactional
+    public List<OutputUserProfileDto> getAlleUserProfiles() {
+        List<UserProfile> userProfileList = userProfileRepository.findAll();
 
+        List<OutputUserProfileDto> outputUserProfileDtoList = new ArrayList<>();
+
+        for (UserProfile userProfile : userProfileList) {
+            OutputUserProfileDto outputUserProfileDto = new OutputUserProfileDto();
+
+            outputUserProfileDto.setEmail(userProfile.getEmail());
+            outputUserProfileDto.setName(userProfile.getName());
+            outputUserProfileDto.setRegio(userProfile.getRegio());
+            outputUserProfileDto.setBio(userProfile.getBio());
+            outputUserProfileDto.setUsername(userProfile.getUser().getUsername());
+            outputUserProfileDto.setId(userProfile.getId());
+            outputUserProfileDto.setFileContent(ImageUtil.decompressImage(userProfile.getImageData()));
+            outputUserProfileDtoList.add(outputUserProfileDto);
+        }
+        return outputUserProfileDtoList;
+    }
 
 
     public OutputUserProfileDto createUserProfile(InputUserProfileDto inputUserProfileDto) throws IOException {
@@ -66,31 +85,6 @@ public class UserProfileService {
     }
 
 
-//    public OutputUserProfileDto createUserProfile(InputUserProfileDto inputUserProfileDto) throws IOException {
-//        UserProfile userProfile = new UserProfile();
-//
-//        inputUserProfileDto.setEmail(userProfile.getEmail());
-//        inputUserProfileDto.setName(userProfile.getName());
-//        inputUserProfileDto.setRegio(userProfile.getRegio());
-//        inputUserProfileDto.setBio(userProfile.getBio());
-//        userProfile.setImageData(ImageUtil.compressImage(inputUserProfileDto.getFile().getBytes()));
-//
-//        if (inputUserProfileDto.getUsername() != null) {
-//            User user = new User();
-//            user.setUsername(inputUserProfileDto.getUsername());
-//            userProfile.setUser(user);
-//        }
-//
-//        userProfileRepository.save(userProfile);
-//        OutputUserProfileDto outputUserProfileDto = new OutputUserProfileDto();
-//
-//        outputUserProfileDto.setEmail(userProfile.getEmail());
-//        outputUserProfileDto.setName(userProfile.getName());
-//        outputUserProfileDto.setRegio(userProfile.getRegio());
-//        outputUserProfileDto.setBio(userProfile.getBio());
-//        outputUserProfileDto.setFileContent(ImageUtil.decompressImage(userProfile.getImageData()));
-//        return outputUserProfileDto;
-//    }
 
 
     @Transactional
@@ -107,6 +101,8 @@ public class UserProfileService {
             outputUserProfileDto.setName(userProfile.getName());
             outputUserProfileDto.setRegio(userProfile.getRegio());
             outputUserProfileDto.setBio(userProfile.getBio());
+            outputUserProfileDto.setUsername(userProfile.getUser().getUsername());
+            outputUserProfileDto.setId(userProfile.getId());
             outputUserProfileDto.setFileContent(ImageUtil.decompressImage(userProfile.getImageData()));
             outputUserProfileDtoList.add(outputUserProfileDto);
         }

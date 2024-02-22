@@ -1,8 +1,10 @@
 package nl.natuurverhaal.natuurverhaal.controllers;
 import nl.natuurverhaal.natuurverhaal.dtos.InputUserProfileDto;
+import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputUserProfileDto;
 import nl.natuurverhaal.natuurverhaal.services.UserProfileService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,13 +23,19 @@ public class UserProfileController {
     }
 
 
+    @GetMapping
+    public ResponseEntity <List<OutputUserProfileDto>> getAllUserProfiles() {
+        List<OutputUserProfileDto> allUserProfiles = userProfileService.getAlleUserProfiles();
+        return ResponseEntity.ok(allUserProfiles);
+    }
+
+
 
     @GetMapping("/{username}")
     public ResponseEntity <List<OutputUserProfileDto>> getUserProfileByUsername(@PathVariable("username") String username) {
         List<OutputUserProfileDto> userProfile = userProfileService.getUserProfileByUsername(username);
         return ResponseEntity.ok(userProfile);
     }
-
 
 
     @PostMapping("/{username}")
@@ -48,7 +56,4 @@ public class UserProfileController {
         OutputUserProfileDto createdProfile = userProfileService.createUserProfile(userProfile);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProfile);
     }
-
-
-
 }
