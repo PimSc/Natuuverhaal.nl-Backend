@@ -1,6 +1,7 @@
 package nl.natuurverhaal.natuurverhaal.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.models.BlogPost;
@@ -47,6 +48,9 @@ public class BlogPostService {
         blogPost.setTitle(inputBlogpostDto.getTitle());
         blogPost.setImageData(inputBlogpostDto.getFile().getBytes());
         blogPost.setImageData(ImageUtil.compressImage(inputBlogpostDto.getFile().getBytes()));
+        blogPost.setDate(inputBlogpostDto.getDate());
+        blogPost.setCategories(inputBlogpostDto.getCategories());
+
 
         if (inputBlogpostDto.getUsername()!=null) {
             User user = new User();
@@ -64,11 +68,14 @@ public class BlogPostService {
         outputBlogpostDto.setTitle(blogPost.getTitle());
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
+        outputBlogpostDto.setDate(blogPost.getDate());
+        outputBlogpostDto.setCategories(blogPost.getCategories());
         outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
         return outputBlogpostDto;
     }
 
 
+    @Transactional
     public OutputBlogpostDto getBlogPost(String username, Long id) {
 
         BlogPost blogPost = blogPostRepository.findByIdAndUser_Username(id, username)
@@ -82,9 +89,12 @@ public class BlogPostService {
         outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
         outputBlogpostDto.setId(blogPost.getId());
         outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
+        outputBlogpostDto.setDate(blogPost.getDate());
+        outputBlogpostDto.setCategories(blogPost.getCategories());
         return outputBlogpostDto;
     }
 
+    @Transactional
     public List<OutputBlogpostDto> getAllBlogs() {
         List<BlogPost> blogPostList = blogPostRepository.findAll();
 
@@ -99,12 +109,14 @@ public class BlogPostService {
             outputBlogpostDto.setContent(blogPost.getContent());
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());
+            outputBlogpostDto.setCategories(blogPost.getCategories());
+            outputBlogpostDto.setDate(blogPost.getDate());
             outputBlogpostDtoList.add(outputBlogpostDto);
         };
         return outputBlogpostDtoList;
     }
 
-
+    @Transactional
     public List<OutputBlogpostDto> getBlogPostByUsername(String username) {
         List<BlogPost> blogPostList = blogPostRepository.findByUser_Username(username)
                 .orElseThrow(() -> new EntityNotFoundException("Blog post not found with username " + username));
@@ -119,15 +131,11 @@ public class BlogPostService {
             outputBlogpostDto.setContent(blogPost.getContent());
             outputBlogpostDto.setUsername(blogPost.getUser().getUsername());
             outputBlogpostDto.setId(blogPost.getId());
+            outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
+            outputBlogpostDto.setCategories(blogPost.getCategories());
+            outputBlogpostDto.setDate(blogPost.getDate());
             outputBlogpostDtoList.add(outputBlogpostDto);
         };
         return outputBlogpostDtoList;
     }
 }
-
-
-
-//    public BlogPost getBlogPostById(Long id) {
-//        return blogPostRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
-//    }
