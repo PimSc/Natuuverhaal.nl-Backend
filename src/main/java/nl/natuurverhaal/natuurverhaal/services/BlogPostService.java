@@ -9,6 +9,12 @@ import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.repositories.BlogPostRepository;
 import nl.natuurverhaal.natuurverhaal.repositories.UserRepository;
 import nl.natuurverhaal.natuurverhaal.utils.ImageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -52,7 +58,7 @@ public class BlogPostService {
         blogPost.setCategories(inputBlogpostDto.getCategories());
 
 
-        if (inputBlogpostDto.getUsername()!=null) {
+        if (inputBlogpostDto.getUsername() != null) {
             User user = new User();
             user.setUsername(inputBlogpostDto.getUsername());
             blogPost.setUser(user);
@@ -112,7 +118,8 @@ public class BlogPostService {
             outputBlogpostDto.setCategories(blogPost.getCategories());
             outputBlogpostDto.setDate(blogPost.getDate());
             outputBlogpostDtoList.add(outputBlogpostDto);
-        };
+        }
+        ;
         return outputBlogpostDtoList;
     }
 
@@ -135,7 +142,46 @@ public class BlogPostService {
             outputBlogpostDto.setCategories(blogPost.getCategories());
             outputBlogpostDto.setDate(blogPost.getDate());
             outputBlogpostDtoList.add(outputBlogpostDto);
-        };
+        }
         return outputBlogpostDtoList;
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(BlogPostService.class);
+
+
+//    @PreAuthorize("#username == authentication.principal.username.auth or hasRole('ROLE_ADMIN')")
+//    public void deleteBlogPost(String username, Long id) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        logger.info("Authenticated user: " + authentication.getName());
+//        logger.info("Authorities: " + authentication.getAuthorities());
+//        BlogPost blogPost = blogPostRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Blog post not found"));
+//
+//        if (!blogPost.getUser().getUsername().equals(username)) {
+//            throw new AccessDeniedException("You are not allowed to delete this blog post");
+//        }
+//
+//        blogPostRepository.delete(blogPost);
+//    }
+
+    public void deleteBlogPost(String username, Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        BlogPost blogPost = blogPostRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Blog post not found"));
+        User user = userRepository.findById(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        if (user.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
+            // kijkt of ROLE_ADMIN is en doet verwijderen
+            blogPostRepository.delete(blogPost);
+        } else if (blogPost.getUser().getUsername().equals(username)) {
+            blogPostRepository.delete(blogPost);
+        } else {
+            // denied
+            throw new AccessDeniedException("You are not allowed to delete this blog post");
+        }
+    }
+
+
+
 }
+

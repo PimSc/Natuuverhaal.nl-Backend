@@ -73,6 +73,7 @@ public class SpringSecurityConfig {
 //                                        .requestMatchers(HttpMethod.GET, "/users/{username}").permitAll()
 //                                        .requestMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
 //                                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+//                                        .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
 //                                        .requestMatchers(HttpMethod.DELETE, "/users/{username}").permitAll()
 
                                         // Je mag meerdere paths tegelijk definieren

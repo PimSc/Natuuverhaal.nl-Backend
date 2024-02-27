@@ -92,6 +92,13 @@ public class BlogPostController {
 
 
 
+    @DeleteMapping("/{username}/{id}")
+    public ResponseEntity<Void> deleteBlogPost(@PathVariable("username") String username, @PathVariable("id") Long id) {
+        blogPostService.deleteBlogPost(username, id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
 
 
