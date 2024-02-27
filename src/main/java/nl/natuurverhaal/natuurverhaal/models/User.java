@@ -65,6 +65,10 @@ public class User {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<BlogPost> blogPosts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<BulletinBoard> bulletinBoards;
+
 
 
     public void addAuthority(Authority authority) {
