@@ -6,6 +6,8 @@ package nl.natuurverhaal.natuurverhaal.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.List;
@@ -59,7 +61,8 @@ public class User {
     @OneToOne(mappedBy = "user")
     private UserProfile userProfile;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<BlogPost> blogPosts;
 
 
