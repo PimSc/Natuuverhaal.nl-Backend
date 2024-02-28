@@ -47,6 +47,7 @@ public class ExcursieService {
             return excursieRepository.findAll();
         }
 
+    @Transactional
         public OutputExcursieDto createExcursie(InputExcursieDto inputExcursieDto) throws IOException {
             Excursie excursie = new Excursie();
 
@@ -61,19 +62,23 @@ public class ExcursieService {
             excursie.setSubject(inputExcursieDto.getSubject());
             excursie.setNiveau(inputExcursieDto.getNiveau());
             excursie.setGuide(inputExcursieDto.getGuide());
+
+
             excursie.setContent(inputExcursieDto.getContent());
             excursie.setMax_participants(inputExcursieDto.getMax_participants());
-            excursie.setImageData(inputExcursieDto.getFile().getBytes());
+//            excursie.setImageData(inputExcursieDto.getFile().getBytes());
             excursie.setImageData(ImageUtil.compressImage(inputExcursieDto.getFile().getBytes()));
             excursie.setDate(inputExcursieDto.getDate());
 //
 //
 //
-//            if (inputExcursieDto.getUsername() != null) {
-//                User user = new User();
-//                user.setUsername(inputExcursieDto.getUsername());
-//                excursie.setUser(user);
-//            }
+            if (inputExcursieDto.getUsername() != null) {
+                User user = new User();
+
+                user.setUsername(inputExcursieDto.getUsername());
+                excursie.setUser(user);
+            }
+
 
 
             excursieRepository.save(excursie);
