@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "excursies")
+@Table(name = "excursie")
 public class Excursie {
 
         @Id
@@ -24,8 +24,9 @@ public class Excursie {
         private String niveau;
         private String guide;
         private String username;
-        private Short current_participants;
         private Short max_participants;
+        private String name;
+        private String type;
         private String date;
 
         @Lob

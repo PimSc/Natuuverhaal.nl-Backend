@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import nl.natuurverhaal.natuurverhaal.dtos.InputExcursieDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputExcursieDto;
+import nl.natuurverhaal.natuurverhaal.models.BlogPost;
 import nl.natuurverhaal.natuurverhaal.models.Excursie;
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.repositories.ExcursieRepository;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 @Service
 public class ExcursieService {
-    
+
 
         private final ExcursieRepository excursieRepository;
         private final UserRepository userRepository;
@@ -49,6 +50,7 @@ public class ExcursieService {
         public OutputExcursieDto createExcursie(InputExcursieDto inputExcursieDto) throws IOException {
             Excursie excursie = new Excursie();
 
+
             excursie.setTitle(inputExcursieDto.getTitle());
             excursie.setCaption(inputExcursieDto.getCaption());
             excursie.setSubtitle(inputExcursieDto.getSubtitle());
@@ -64,14 +66,14 @@ public class ExcursieService {
             excursie.setImageData(inputExcursieDto.getFile().getBytes());
             excursie.setImageData(ImageUtil.compressImage(inputExcursieDto.getFile().getBytes()));
             excursie.setDate(inputExcursieDto.getDate());
-
-
-
-            if (inputExcursieDto.getUsername() != null) {
-                User user = new User();
-                user.setUsername(inputExcursieDto.getUsername());
-                excursie.setUser(user);
-            }
+//
+//
+//
+//            if (inputExcursieDto.getUsername() != null) {
+//                User user = new User();
+//                user.setUsername(inputExcursieDto.getUsername());
+//                excursie.setUser(user);
+//            }
 
 
             excursieRepository.save(excursie);

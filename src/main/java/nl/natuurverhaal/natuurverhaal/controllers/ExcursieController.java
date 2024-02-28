@@ -51,7 +51,8 @@ public class ExcursieController {
 
 
         @PostMapping("/{username}")
-        public ResponseEntity<OutputExcursieDto> createExcursie(@RequestPart("title") String title,
+        public ResponseEntity<OutputExcursieDto> createExcursie(@RequestPart("file") MultipartFile file,
+                                                                @RequestPart("title") String title,
                                                                 @RequestPart("caption") String caption,
                                                                 @RequestPart("subtitle") String subtitle,
                                                                 @RequestPart("username") String username,
@@ -63,8 +64,7 @@ public class ExcursieController {
                                                                 @RequestPart("niveau") String niveau,
                                                                 @RequestPart("guide") String guide,
                                                                 @RequestPart("content") String content,
-                                                                @RequestPart("max_participants") Short max_participants,
-                                                                @RequestPart("file") MultipartFile file)
+                                                                @RequestPart("max_participants") Short max_participants)
 
                 throws IOException {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -77,6 +77,7 @@ public class ExcursieController {
             System.out.println("caption: " + caption);
 
             InputExcursieDto excursie = new InputExcursieDto();
+            excursie.setFile(file);
             excursie.setTitle(title);
             excursie.setCaption(caption);
             excursie.setSubtitle(subtitle);
@@ -90,7 +91,6 @@ public class ExcursieController {
             excursie.setGuide(guide);
             excursie.setContent(content);
             excursie.setMax_participants(max_participants);
-            excursie.setFile(file);
             excursie.setDate(formattedDateTime);
             OutputExcursieDto createdExcursie = excursieService.createExcursie(excursie);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdExcursie);
