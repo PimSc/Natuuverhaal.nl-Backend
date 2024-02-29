@@ -60,7 +60,6 @@ public class ExcursieService {
             excursie.setPrice(inputExcursieDto.getPrice());
             excursie.setLocation(inputExcursieDto.getLocation());
             excursie.setSubject(inputExcursieDto.getSubject());
-            excursie.setNiveau(inputExcursieDto.getNiveau());
             excursie.setGuide(inputExcursieDto.getGuide());
 
 
@@ -92,7 +91,6 @@ public class ExcursieService {
             outputExcursieDto.setPrice(excursie.getPrice());
             outputExcursieDto.setLocation(excursie.getLocation());
             outputExcursieDto.setSubject(excursie.getSubject());
-            outputExcursieDto.setNiveau(excursie.getNiveau());
             outputExcursieDto.setGuide(excursie.getGuide());
             outputExcursieDto.setContent(excursie.getContent());
             outputExcursieDto.setUsername(excursie.getUser().getUsername());
@@ -120,7 +118,6 @@ public class ExcursieService {
             outputExcursieDto.setPrice(excursie.getPrice());
             outputExcursieDto.setLocation(excursie.getLocation());
             outputExcursieDto.setSubject(excursie.getSubject());
-            outputExcursieDto.setNiveau(excursie.getNiveau());
             outputExcursieDto.setGuide(excursie.getGuide());
             outputExcursieDto.setContent(excursie.getContent());
             outputExcursieDto.setUsername(excursie.getUser().getUsername());
@@ -148,7 +145,6 @@ public class ExcursieService {
                 outputExcursieDto.setPrice(excursie.getPrice());
                 outputExcursieDto.setLocation(excursie.getLocation());
                 outputExcursieDto.setSubject(excursie.getSubject());
-                outputExcursieDto.setNiveau(excursie.getNiveau());
                 outputExcursieDto.setGuide(excursie.getGuide());
                 outputExcursieDto.setContent(excursie.getContent());
                 outputExcursieDto.setUsername(excursie.getUser().getUsername());
@@ -178,7 +174,6 @@ public class ExcursieService {
                 outputExcursieDto.setPrice(excursie.getPrice());
                 outputExcursieDto.setLocation(excursie.getLocation());
                 outputExcursieDto.setSubject(excursie.getSubject());
-                outputExcursieDto.setNiveau(excursie.getNiveau());
                 outputExcursieDto.setGuide(excursie.getGuide());
                 outputExcursieDto.setContent(excursie.getContent());
                 outputExcursieDto.setUsername(excursie.getUser().getUsername());

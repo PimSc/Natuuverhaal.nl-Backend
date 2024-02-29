@@ -61,10 +61,9 @@ public class ExcursieController {
                                                                 @RequestPart("price") String price,
                                                                 @RequestPart("location") String location,
                                                                 @RequestPart("subject") String subject,
-                                                                @RequestPart("niveau") String niveau,
                                                                 @RequestPart("guide") String guide,
                                                                 @RequestPart("content") String content,
-                                                                @RequestPart("max_participants") int max_participants)
+                                                                @RequestPart("max_participants") String max_participants)
 
                 throws IOException {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -87,10 +86,9 @@ public class ExcursieController {
             excursie.setPrice(price);
             excursie.setLocation(location);
             excursie.setSubject(subject);
-            excursie.setNiveau(niveau);
             excursie.setGuide(guide);
             excursie.setContent(content);
-            excursie.setMax_participants((short)max_participants);
+            excursie.setMax_participants(max_participants);
             excursie.setDate(formattedDateTime);
             OutputExcursieDto createdExcursie = excursieService.createExcursie(excursie);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdExcursie);

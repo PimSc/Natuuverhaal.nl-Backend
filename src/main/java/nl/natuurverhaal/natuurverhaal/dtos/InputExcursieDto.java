@@ -16,11 +16,10 @@ public class InputExcursieDto {
         private String price;
         private String location;
         private String subject;
-        private String niveau;
         private String guide;
         private String content;
         private String username;
-        private Short max_participants;
+        private String max_participants;
         private MultipartFile file;
         private String date;
     }

@@ -16,11 +16,10 @@ public class OutputExcursieDto {
         private String price;
         private String location;
         private String subject;
-        private String niveau;
         private String guide;
         private String content;
         private String username;
-        private Short max_participants;
+        private String max_participants;
         private byte[] fileContent;
         private String date;
 }
