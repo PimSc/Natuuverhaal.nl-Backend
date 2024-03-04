@@ -79,18 +79,12 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
-
-
-    //    Een HTTP PUT-endpoint op het pad "/users/{username}".
-//    Het bijwerkt een bestaande gebruiker op basis van de opgegeven gebruikersnaam en het meegeleverde
-//    UserDto-object in het verzoek.
     @PutMapping(value = "/{username}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
-
-        userService.updateUser(username, dto);
-
-        return ResponseEntity.noContent().build();
+        UserDto updatedUser = userService.updateUser(username, dto);
+        return ResponseEntity.ok(updatedUser);
     }
+
 
 //    Een HTTP DELETE-endpoint op het pad "/users/{username}". Het verwijdert een gebruiker op basis van de
 //    opgegeven gebruikersnaam.

@@ -38,6 +38,7 @@ public class UserProfileController {
     }
 
 
+
     @PostMapping("/{username}")
     public ResponseEntity<OutputUserProfileDto> createUserProfile(@RequestPart("email") String email,
                                                             @RequestPart("name") String name,
