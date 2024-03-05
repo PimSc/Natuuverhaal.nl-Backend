@@ -68,10 +68,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//        // Opslaan van het versleutelde wachtwoord in de database of ergens anders
-//        userRepository.save(new User(UserDto.getUsername(), encodedPassword));
-//    }
-
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();

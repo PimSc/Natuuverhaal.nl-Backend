@@ -41,15 +41,30 @@ public class UserController {
         return ResponseEntity.ok().body(optionalUser);
     }
 
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
+//    @PostMapping
+//    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
+//
+//        String newUsername = userService.createUser(dto);
+//        userService.addAuthority(newUsername, "ROLE_USER");
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+//                .buildAndExpand(newUsername).toUri();
+//
+//        return ResponseEntity.created(location).build();
+//    }
 
+
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
+        if (userService.existsByUsername(dto.getUsername())) {
+            throw new BadRequestException("Username is already taken");
+        }
+        // Let op: het password van een nieuwe gebruiker wordt in deze code nog niet encrypted opgeslagen.
+        // Je kan dus (nog) niet inloggen met een nieuwe user.
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ROLE_USER");
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
-
         return ResponseEntity.created(location).build();
     }
 
@@ -99,8 +114,5 @@ public class UserController {
         userService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }
-
-
-
 
 }
