@@ -15,18 +15,15 @@ import java.util.Map;
 //@CrossOrigin Geeft aan dat Cross-Origin Resource Sharing (CORS) is ingeschakeld,
 @CrossOrigin
 @RestController
-//De @RequestMapping-annotatie geeft aan dat alle eindpunten in deze controller zullen beginnen met "/users"
 @RequestMapping(value = "/users")
 public class UserController {
 
-    //Contructor om Spring bean te injecteren
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-//    HTTP GET-endpoint op het pad "/users". Het retourneert een lijst van UserDto-objecten.
     @GetMapping(value = "")
     public ResponseEntity<List<UserDto>> getUsers() {
 
@@ -35,8 +32,6 @@ public class UserController {
         return ResponseEntity.ok().body(userDtos);
     }
 
-//    HTTP GET-endpoint op het pad "/users/{username}". Het retourneert een enkel UserDto-object op basis van de
-//    opgegeven gebruikersnaam.
     @GetMapping(value = "/{username}")
     public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
 
@@ -44,16 +39,10 @@ public class UserController {
 
 
         return ResponseEntity.ok().body(optionalUser);
-
     }
 
-//    HTTP POST-endpoint op het pad "/users". Het creëert een nieuwe gebruiker op basis van het meegeleverde
-//    UserDto-object in het verzoek.
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {;
-
-        // Let op: het password van een nieuwe gebruiker wordt in deze code nog niet encrypted opgeslagen.
-        // Je kan dus (nog) niet inloggen met een nieuwe user.
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ROLE_USER");
@@ -66,9 +55,6 @@ public class UserController {
 
     @PostMapping("/admin")
     public ResponseEntity<UserDto> createAdmin(@RequestBody UserDto dto) {;
-
-        // Let op: het password van een nieuwe gebruiker wordt in deze code nog niet encrypted opgeslagen.
-        // Je kan dus (nog) niet inloggen met een nieuwe user.
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ROLE_ADMIN");
@@ -85,24 +71,17 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-
-//    Een HTTP DELETE-endpoint op het pad "/users/{username}". Het verwijdert een gebruiker op basis van de
-//    opgegeven gebruikersnaam.
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
 
-//    Een HTTP GET-endpoint op het pad "/users/{username}/authorities". Het retourneert de autoriteiten
-//    (bijv. rollen) van een gebruiker.
     @GetMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
         return ResponseEntity.ok().body(userService.getAuthorities(username));
     }
 
-//    Een HTTP POST-endpoint op het pad "/users/{username}/authorities". Het voegt een nieuwe autoriteit
-//    toe aan een gebruiker op basis van de opgegeven gebruikersnaam en de autoriteit in het verzoek
     @PostMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
         try {
@@ -115,8 +94,6 @@ public class UserController {
         }
     }
 
-//    Een HTTP DELETE-endpoint op het pad "/users/{username}/authorities/{authority}". Het verwijdert een
-//    specifieke autoriteit van een gebruiker op basis van de opgegeven gebruikersnaam en autoriteit.
     @DeleteMapping(value = "/{username}/authorities/{authority}")
     public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         userService.removeAuthority(username, authority);
