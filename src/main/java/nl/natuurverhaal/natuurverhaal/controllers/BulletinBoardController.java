@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBulletinBoardDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBulletinBoardDto;
 import nl.natuurverhaal.natuurverhaal.services.BulletinBoardService;
-import nl.natuurverhaal.natuurverhaal.utils.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/bulletin-boards")
@@ -78,6 +76,36 @@ public class BulletinBoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBulletinBoard);
     }
 
+
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateBulletinBoard(@PathVariable("id") Long id,
+                                                    @RequestParam(value = "file", required = false) MultipartFile file,
+                                               @RequestPart("username") String username,
+                                               @RequestPart("caption") String caption,
+                                               @RequestPart("content") String content,
+                                               @RequestPart("title") String title)
+            throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        LocalDateTime currentDateAndTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDateTime = currentDateAndTime.format(formatter);
+
+        System.out.println("file: " + file);
+        System.out.println("username: " + username);
+        System.out.println("caption: " + caption);
+
+        InputBulletinBoardDto bulletinBoard = new InputBulletinBoardDto();
+        bulletinBoard.setCaption(caption);
+        bulletinBoard.setTitle(title);
+        bulletinBoard.setContent(content);
+        bulletinBoard.setUsername(username);
+        bulletinBoard.setFile(file);
+        bulletinBoard.setDate(formattedDateTime);
+
+        bulletinBoardService.updateBulletinBoard(id, bulletinBoard);
+        return ResponseEntity.noContent().build();
+    }
 
 
     @DeleteMapping("/{username}/{id}")

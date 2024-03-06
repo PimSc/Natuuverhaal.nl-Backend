@@ -138,7 +138,6 @@ public class BlogPostService {
         blogPost.setDate(inputBlogpostDto.getDate());
         blogPost.setCategories(inputBlogpostDto.getCategories());
         return blogPostRepository.save(blogPost);
-
     }
 
 
