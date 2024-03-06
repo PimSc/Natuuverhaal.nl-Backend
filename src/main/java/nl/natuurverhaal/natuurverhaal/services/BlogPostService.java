@@ -123,6 +123,25 @@ public class BlogPostService {
         return outputBlogpostDtoList;
     }
 
+
+    public BlogPost updateBlogPost(Long id, InputBlogpostDto inputBlogpostDto) throws IOException {
+
+        BlogPost blogPost = blogPostRepository.findById(id)
+
+                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
+        blogPost.setCaption(inputBlogpostDto.getCaption());
+        blogPost.setContent(inputBlogpostDto.getContent());
+        blogPost.setSubtitle(inputBlogpostDto.getSubtitle());
+        blogPost.setTitle(inputBlogpostDto.getTitle());
+        blogPost.setImageData(inputBlogpostDto.getFile().getBytes());
+        blogPost.setImageData(ImageUtil.compressImage(inputBlogpostDto.getFile().getBytes()));
+        blogPost.setDate(inputBlogpostDto.getDate());
+        blogPost.setCategories(inputBlogpostDto.getCategories());
+        return blogPostRepository.save(blogPost);
+
+    }
+
+
     @Transactional
     public List<OutputBlogpostDto> getBlogPostByUsername(String username) {
         List<BlogPost> blogPostList = blogPostRepository.findByUser_Username(username)

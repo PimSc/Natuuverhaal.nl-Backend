@@ -92,6 +92,44 @@ public class BlogPostController {
 
 
 
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateBlogPost(@PathVariable("id") Long id,
+                                               @RequestPart("file") MultipartFile file,
+                                               @RequestPart("username") String username,
+                                               @RequestPart("caption") String caption,
+                                               @RequestPart("title") String title,
+                                               @RequestPart("subtitle") String subtitle,
+                                               @RequestPart("content") String content,
+                                               @RequestPart("categories") String categoriesJson)
+            throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Set<Category> categories = new HashSet<>();
+        Category c1 = Category.valueOf(categoriesJson);
+        categories.add(c1);
+        LocalDateTime currentDateAndTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDateTime = currentDateAndTime.format(formatter);
+
+        System.out.println("file: " + file);
+        System.out.println("username: " + username);
+        System.out.println("caption: " + caption);
+
+        InputBlogpostDto blogPost = new InputBlogpostDto();
+        blogPost.setCaption(caption);
+        blogPost.setTitle(title);
+        blogPost.setSubtitle(subtitle);
+        blogPost.setContent(content);
+        blogPost.setUsername(username);
+        blogPost.setFile(file);
+        blogPost.setDate(formattedDateTime);
+        blogPost.setCategories(categories);
+
+        blogPostService.updateBlogPost(id, blogPost);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
     @DeleteMapping("/{username}/{id}")
     public ResponseEntity<Void> deleteBlogPost(@PathVariable("username") String username, @PathVariable("id") Long id) {
         blogPostService.deleteBlogPost(username, id);

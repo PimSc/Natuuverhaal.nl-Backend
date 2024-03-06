@@ -37,6 +37,7 @@
 
 package nl.natuurverhaal.natuurverhaal.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import nl.natuurverhaal.natuurverhaal.dtos.UserDto;
 import nl.natuurverhaal.natuurverhaal.exceptions.RecordNotFoundException;
 import nl.natuurverhaal.natuurverhaal.models.Authority;
@@ -67,10 +68,9 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//        // Opslaan van het versleutelde wachtwoord in de database of ergens anders
-//        userRepository.save(new User(UserDto.getUsername(), encodedPassword));
-//    }
-
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
@@ -111,13 +111,45 @@ public class UserService {
         userRepository.deleteById(username);
     }
 
-    //    Update het wachtwoord van een gebruiker.
-    public void updateUser(String username, UserDto newUser) {
-        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
-        User user = userRepository.findById(username).get();
-        user.setPassword(newUser.getPassword());
-        userRepository.save(user);
+//    //    Update het wachtwoord van een gebruiker.
+//    public void updateUser(String username, UserDto newUser) {
+//        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
+//        User user = userRepository.findById(username).get();
+//        user.setPassword(newUser.getPassword());
+//        userRepository.save(user);
+//    }
+
+    public UserDto updateUser(String username, UserDto dto) {
+        // Fetch the user from the database
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with username " + username));
+
+        // Update the user fields
+        user.setEmail(dto.getEmail());
+        user.setUsername(dto.getUsername());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        // ... update other fields as necessary
+
+        // Save the updated user back to the database
+        User updatedUser = userRepository.save(user);
+
+        // Convert the updated User entity to UserDto and return it
+        UserDto updatedUserDto = convertToDto(updatedUser);
+        return updatedUserDto;
     }
+
+    public UserDto convertToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(user.getPassword());
+        userDto.setEnabled(user.isEnabled());
+        userDto.setApikey(user.getApikey());
+        userDto.setEmail(user.getEmail());
+        userDto.setAuthorities(user.getAuthorities());
+        return userDto;
+    }
+
 
     //    Haalt de rollen (authorities) van een gebruiker op basis van de gebruikersnaam. Gooit een
     public Set<Authority> getAuthorities(String username) {
