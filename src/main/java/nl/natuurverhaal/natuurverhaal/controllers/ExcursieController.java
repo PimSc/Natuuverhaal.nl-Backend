@@ -101,12 +101,6 @@ public class ExcursieController {
 
 
 
-
-
-
-
-
-
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateExcursie(@PathVariable("id") Long id,
                                                @RequestPart("file") MultipartFile file,

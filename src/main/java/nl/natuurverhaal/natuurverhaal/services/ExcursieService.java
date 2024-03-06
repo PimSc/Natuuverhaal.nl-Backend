@@ -134,7 +134,7 @@ public class ExcursieService {
 
         Excursie excursie = excursieRepository.findById(id)
 
-                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Excursion not found with id " + id));
         excursie.setCaption(inputExcursieDto.getCaption());
         excursie.setContent(inputExcursieDto.getContent());
         excursie.setSubtitle(inputExcursieDto.getSubtitle());

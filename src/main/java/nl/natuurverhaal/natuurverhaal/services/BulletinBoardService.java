@@ -3,8 +3,10 @@ package nl.natuurverhaal.natuurverhaal.services;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBulletinBoardDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBulletinBoardDto;
+import nl.natuurverhaal.natuurverhaal.models.BlogPost;
 import nl.natuurverhaal.natuurverhaal.models.BulletinBoard;
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.repositories.BulletinBoardRepository;
@@ -115,6 +117,25 @@ public class BulletinBoardService {
             ;
             return outputBulletinBoardDtoList;
         }
+
+    public BulletinBoard updateBulletinBoard(Long id, InputBulletinBoardDto inputBulletinBoardDto) throws IOException {
+        BulletinBoard bulletinBoard = bulletinBoardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Bulletinboard post post not found with id " + id));
+
+        bulletinBoard.setCaption(inputBulletinBoardDto.getCaption());
+        bulletinBoard.setContent(inputBulletinBoardDto.getContent());
+        bulletinBoard.setTitle(inputBulletinBoardDto.getTitle());
+
+        // Check if the file is provided
+        if (inputBulletinBoardDto.getFile() != null) {
+            // Update the image data if the file is provided
+            byte[] imageData = ImageUtil.compressImage(inputBulletinBoardDto.getFile().getBytes());
+            bulletinBoard.setImageData(imageData);
+        }
+
+        bulletinBoard.setDate(inputBulletinBoardDto.getDate());
+        return bulletinBoardRepository.save(bulletinBoard);
+    }
 
         @Transactional
         public List<OutputBulletinBoardDto> getBulletinBoardByUsername(String username) {
