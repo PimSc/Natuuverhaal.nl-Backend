@@ -2,6 +2,7 @@ package nl.natuurverhaal.natuurverhaal.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.InputExcursieDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputExcursieDto;
 import nl.natuurverhaal.natuurverhaal.models.BlogPost;
@@ -128,6 +129,29 @@ public class ExcursieService {
 
             return outputExcursieDto;
         }
+
+    public Excursie updateExcursie(Long id, InputExcursieDto inputExcursieDto) throws IOException {
+
+        Excursie excursie = excursieRepository.findById(id)
+
+                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
+        excursie.setCaption(inputExcursieDto.getCaption());
+        excursie.setContent(inputExcursieDto.getContent());
+        excursie.setSubtitle(inputExcursieDto.getSubtitle());
+        excursie.setTitle(inputExcursieDto.getTitle());
+        excursie.setImageData(inputExcursieDto.getFile().getBytes());
+        excursie.setImageData(ImageUtil.compressImage(inputExcursieDto.getFile().getBytes()));
+        excursie.setDate(inputExcursieDto.getDate());
+        excursie.setActivity_date(inputExcursieDto.getActivity_date());
+        excursie.setActivity_time(inputExcursieDto.getActivity_time());
+        excursie.setPrice(inputExcursieDto.getPrice());
+        excursie.setLocation(inputExcursieDto.getLocation());
+        excursie.setSubject(inputExcursieDto.getSubject());
+        excursie.setGuide(inputExcursieDto.getGuide());
+        excursie.setMax_participants(inputExcursieDto.getMax_participants());
+        return excursieRepository.save(excursie);
+
+    }
 
         @Transactional
         public List<OutputExcursieDto> getAllExcursies() {

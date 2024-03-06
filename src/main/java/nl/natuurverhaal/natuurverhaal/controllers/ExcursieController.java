@@ -1,9 +1,11 @@
 package nl.natuurverhaal.natuurverhaal.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.InputExcursieDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputExcursieDto;
 import nl.natuurverhaal.natuurverhaal.services.ExcursieService;
+import nl.natuurverhaal.natuurverhaal.utils.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/excursies")
@@ -93,6 +97,62 @@ public class ExcursieController {
             OutputExcursieDto createdExcursie = excursieService.createExcursie(excursie);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdExcursie);
         }
+
+
+
+
+
+
+
+
+
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateExcursie(@PathVariable("id") Long id,
+                                               @RequestPart("file") MultipartFile file,
+                                               @RequestPart("username") String username,
+                                               @RequestPart("caption") String caption,
+                                               @RequestPart("title") String title,
+                                               @RequestPart("subtitle") String subtitle,
+                                               @RequestPart("guide") String guide,
+                                               @RequestPart("max_participants") String max_participants,
+                                               @RequestPart("location") String location,
+                                               @RequestPart("price") String price,
+                                               @RequestPart("activity_time") String activity_time,
+                                               @RequestPart("activity_date") String activity_date,
+                                               @RequestPart("subject") String subject,
+                                               @RequestPart("content") String content)
+            throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        LocalDateTime currentDateAndTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDateTime = currentDateAndTime.format(formatter);
+
+        System.out.println("file: " + file);
+        System.out.println("username: " + username);
+        System.out.println("caption: " + caption);
+
+        InputExcursieDto excursie = new InputExcursieDto();
+        excursie.setCaption(caption);
+        excursie.setTitle(title);
+        excursie.setSubtitle(subtitle);
+        excursie.setContent(content);
+        excursie.setUsername(username);
+        excursie.setFile(file);
+        excursie.setDate(formattedDateTime);
+        excursie.setActivity_date(activity_date);
+        excursie.setActivity_time(activity_time);
+        excursie.setPrice(price);
+        excursie.setLocation(location);
+        excursie.setSubject(subject);
+        excursie.setGuide(guide);
+        excursie.setMax_participants(max_participants);
+
+        excursieService.updateExcursie(id, excursie);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 
 
