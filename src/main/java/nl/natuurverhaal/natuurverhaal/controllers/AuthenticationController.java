@@ -17,6 +17,7 @@ import java.security.Principal;
 //@CrossOrigin Geeft aan dat Cross-Origin Resource Sharing (CORS) is ingeschakeld,
 @CrossOrigin
 @RestController
+@RequestMapping(value = "/users")
 public class AuthenticationController {
 
     //Contructor om Spring bean te injecteren
