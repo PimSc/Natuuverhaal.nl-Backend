@@ -1,4 +1,4 @@
-package nl.natuurverhaal.natuurverhaal.config.DatabaseLoader;
+package nl.natuurverhaal.natuurverhaal.config;
 
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.models.Authority;
