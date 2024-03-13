@@ -65,24 +65,54 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests(auth ->
                                 auth
                                         // Wanneer je deze uncomment, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
-                                        .requestMatchers("/**").permitAll()
-//                                        .requestMatchers(HttpMethod.POST, "/image").permitAll()
-//                                        .requestMatchers(HttpMethod.GET, "/image/{username}").permitAll()
-//                                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
-//                                        .requestMatchers(HttpMethod.GET, "/users").permitAll()
-//                                        .requestMatchers(HttpMethod.GET, "/users/{username}").permitAll()
-//                                        .requestMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
-//                                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-//                                        .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-//                                        .requestMatchers(HttpMethod.DELETE, "/users/{username}").permitAll()
+//                                        .requestMatchers("/**").permitAll()
 
-                                        // Je mag meerdere paths tegelijk definieren
-//                                        .requestMatchers("/cimodules", "/remotecontrollers", "/televisions", "/wallbrackets").hasAnyRole("ADMIN", "USER")
-//                                        .requestMatchers("/authenticated").authenticated()
-//                                        .requestMatchers("/authenticated").permitAll()
-//                                        .requestMatchers("/authenticate").permitAll()
-//                                        .anyRequest().denyAll()
+                                        //AUTHENTICATED
+                                        .requestMatchers(HttpMethod.GET, "/authenticated").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                                        //BLOGPOSTS
+                                        .requestMatchers(HttpMethod.GET, "/blog-posts/{username}/{id}").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/blog-posts/{username}").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/blog-posts").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/blog-posts/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/blog-posts/{username}/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.PUT, "/blog-posts/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        //BULLETINBOARDS
+                                        .requestMatchers(HttpMethod.GET, "/bulletin-boards/{username}/{id}").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/bulletin-boards/{username}").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/bulletin-boards").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/bulletin-boards/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/bulletin-boards/{username}/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.PUT, "/bulletin-boards/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        //Exursies
+                                        .requestMatchers(HttpMethod.GET, "/excursies/{username}/{id}").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/excursies/{username}").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/excursies").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/excursies/{username}").hasAuthority("ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/excursies/{username}/{id}").hasAuthority("ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.PUT, "/excursies/{id}").hasAuthority("ROLE_ADMIN")
+                                        //IMAGE
+                                        .requestMatchers(HttpMethod.POST, "/image").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.GET, "/image/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/image/{usename}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        //USERS
+                                        .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/users/admin").hasAuthority("ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.PUT, "/users/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/users/{username}").hasAuthority("ROLE_ADMIN")
+                                        //AUTHORITIES
+                                        .requestMatchers(HttpMethod.GET, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.POST, "/users/{username}/authorities").hasAuthority("ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/users/{username}/authorities/{authority}").hasAuthority("ROLE_ADMIN")
+                                        //USERPROFILE
+                                        .requestMatchers(HttpMethod.GET, "/user-profile").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/user-profile/{username}").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/user-profile/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+//                                      .requestMatchers(HttpMethod.PUT, "/user-profile/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 )
+
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

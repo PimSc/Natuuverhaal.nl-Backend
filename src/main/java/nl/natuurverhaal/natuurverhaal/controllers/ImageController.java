@@ -38,19 +38,8 @@ private final UserRepository userRepository;
     @PostMapping
     public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile multipartFile, @RequestParam String username) throws IOException {
         String image = imageDataService.uploadImage(multipartFile, username);
-//        image is de naam van de file die je terug krijgt
         return ResponseEntity.ok("file had been uploaded, " + image);
     }
-//    @GetMapping("/{username}")
-//    public ResponseEntity<Object> downloadImage(@PathVariable("username") String username) throws IOException {
-//        byte[] image = imageDataService.downloadImage(username);
-//        Optional<User> user = userRepository.findById(username);
-//        Optional<ImageData> dbImageData = imageDataRepository.findById(user.get().getImageData().getId());
-//        MediaType mediaType = MediaType.valueOf(dbImageData.get().getType());
-////        Hier kan je specifieke datatypen meegeven, zoals image/jpeg/PDF etc.
-////        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
-//        return ResponseEntity.ok().contentType(mediaType).body(image);
-//    }
 
     @GetMapping("/{username}")
     public ResponseEntity<Object> downloadImage (@PathVariable("username") String username) throws IOException {

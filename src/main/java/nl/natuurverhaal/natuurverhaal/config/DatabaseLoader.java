@@ -1,4 +1,4 @@
-package nl.natuurverhaal.natuurverhaal.config.DatabaseLoader;
+package nl.natuurverhaal.natuurverhaal.config;
 
 import nl.natuurverhaal.natuurverhaal.models.User;
 import nl.natuurverhaal.natuurverhaal.models.Authority;
@@ -16,8 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
             return args -> {
                 if (userRepository.findByUsername("admin").isEmpty()) {
                     User admin = new User();
-                    admin.setUsername("test");
-                    admin.setPassword(passwordEncoder.encode("test"));
+                    admin.setUsername("Testadmin");
+                    admin.setPassword(passwordEncoder.encode("12345678%"));
 
                     Authority adminAuthority = new Authority();
                     adminAuthority.setAuthority("ROLE_ADMIN");
@@ -28,8 +28,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                 }
                 if (userRepository.findByUsername("user").isEmpty()) {
                     User user = new User();
-                    user.setUsername("pim");
-                    user.setPassword(passwordEncoder.encode("pim"));
+                    user.setUsername("Testgebruiker");
+                    user.setPassword(passwordEncoder.encode("12345678%"));
 
                     Authority adminAuthority = new Authority();
                     adminAuthority.setAuthority("ROLE_USER");
