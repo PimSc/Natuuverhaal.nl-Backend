@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionController {
@@ -17,7 +18,6 @@ public class ExceptionController {
 
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
-    
     @ExceptionHandler(value = IndexOutOfBoundsException.class)
     public ResponseEntity<Object> exception(IndexOutOfBoundsException exception) {
 
@@ -34,5 +34,18 @@ public class ExceptionController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public static class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
+    }
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public static class AlreadyExistsException extends RuntimeException {
+        public AlreadyExistsException(String message) {
+            super(message);
+        }
+    }
 
 }
