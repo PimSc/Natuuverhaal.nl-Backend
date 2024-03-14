@@ -96,7 +96,7 @@ public class BlogPostController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateBlogPost(@PathVariable("id") Long id,
-                                               @RequestPart("file") MultipartFile file,
+                                               @RequestParam(value = "file", required = false) MultipartFile file,
                                                @RequestPart("username") String username,
                                                @RequestPart("caption") String caption,
                                                @RequestPart("title") String title,
