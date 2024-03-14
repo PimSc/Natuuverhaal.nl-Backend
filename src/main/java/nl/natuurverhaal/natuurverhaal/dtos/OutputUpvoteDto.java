@@ -1,4 +1,13 @@
 package nl.natuurverhaal.natuurverhaal.dtos;
 
-public class OutputUpvoteDto {
-}
+import lombok.Data;
+
+    @Data
+    public class OutputUpvoteDto {
+        private Long id;
+        private String username;
+        private Long blogPostId;
+
+        // getters and setters
+    }
+

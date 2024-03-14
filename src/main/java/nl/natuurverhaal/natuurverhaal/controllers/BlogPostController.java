@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
+import nl.natuurverhaal.natuurverhaal.models.BlogPost;
+import nl.natuurverhaal.natuurverhaal.repositories.BlogPostRepository;
 import nl.natuurverhaal.natuurverhaal.services.BlogPostService;
 import nl.natuurverhaal.natuurverhaal.utils.Category;
 import org.springframework.http.HttpStatus;
@@ -27,12 +29,12 @@ import java.util.Set;
 @RequestMapping("/blog-posts")
 public class BlogPostController {
     private final BlogPostService blogPostService;
+    private final BlogPostRepository blogPostRepository;
 
-    public BlogPostController(BlogPostService blogPostService) {
+    public BlogPostController(BlogPostService blogPostService, BlogPostRepository blogPostRepository) {
         this.blogPostService = blogPostService;
+        this.blogPostRepository = blogPostRepository;
     }
-
-
 
     @GetMapping("/{username}/{id}")
     public ResponseEntity<OutputBlogpostDto> getBlogPost(@PathVariable("username") String username, @PathVariable("id") Long id) {
@@ -136,7 +138,13 @@ public class BlogPostController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}/upvotes")
+    public ResponseEntity<Integer> getUpvoteCount(@PathVariable Long id) {
+        BlogPost blogPost = blogPostRepository.findById(id)
+                .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("Blog post not found"));
 
+        return ResponseEntity.ok(blogPost.getUpvotes());
+    }
 }
 
 

@@ -110,7 +110,10 @@ public class SpringSecurityConfig {
                                         .requestMatchers(HttpMethod.GET, "/user-profile").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/user-profile/{username}").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/user-profile/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-//                                      .requestMatchers(HttpMethod.PUT, "/user-profile/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        //UPVOTE
+                                        .requestMatchers(HttpMethod.POST, "/upvotes").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.GET, "/blog-posts/{id}/upvotes").permitAll()
+
                 )
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

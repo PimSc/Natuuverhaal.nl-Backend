@@ -23,6 +23,12 @@ public class BlogPost {
     private String type;
     private String date;
 
+    private int upvotes = 0;
+
+    public void incrementUpvotes() {
+        this.upvotes++;
+    }
+
     @Lob
     private byte[] imageData;
 
@@ -39,5 +45,4 @@ public class BlogPost {
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
-
 }
