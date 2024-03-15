@@ -150,11 +150,11 @@ public class ExcursieController {
 
 
 
-        @DeleteMapping("/{username}/{id}")
-        public ResponseEntity<Void> deleteExcursie(@PathVariable("username") String username, @PathVariable("id") Long id) {
-            excursieService.deleteExcursie(username, id);
-            return ResponseEntity.noContent().build();
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteExcursie(@PathVariable Long id) {
+        excursieService.deleteExcursie(id);
+        return ResponseEntity.noContent().build();
+    }
 
     }
 

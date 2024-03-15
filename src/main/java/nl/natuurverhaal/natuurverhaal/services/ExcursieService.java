@@ -27,15 +27,17 @@ import java.util.Optional;
 @Service
 public class ExcursieService {
 
+    private final ExcursieRepository excursieRepository;
+    private final UserRepository userRepository;
 
-        private final ExcursieRepository excursieRepository;
-        private final UserRepository userRepository;
+    public ExcursieService(ExcursieRepository excursieRepository, UserRepository userRepository) {
+        this.excursieRepository = excursieRepository;
+        this.userRepository = userRepository;
+    }
 
-
-        public ExcursieService(ExcursieRepository excursieRepository, UserRepository userRepository) {
-            this.excursieRepository = excursieRepository;
-            this.userRepository = userRepository;
-        }
+    public void deleteExcursie(Long id) {
+        excursieRepository.deleteById(id);
+    }
 
         public List<Excursie> getAllExcursies(String username, long id) {
             Optional<User> user = userRepository.findById(username);
@@ -210,23 +212,7 @@ public class ExcursieService {
             return outputExcursieDtoList;
         }
 
-        private static final Logger logger = LoggerFactory.getLogger(nl.natuurverhaal.natuurverhaal.services.ExcursieService.class);
 
-
-//    @PreAuthorize("#username == authentication.principal.username.auth or hasRole('ROLE_ADMIN')")
-//    public void deleteExcursie(String username, Long id) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        logger.info("Authenticated user: " + authentication.getName());
-//        logger.info("Authorities: " + authentication.getAuthorities());
-//        Excursie excursie = excursieRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Excursie  not found"));
-//
-//        if (!excursie.getUser().getUsername().equals(username)) {
-//            throw new AccessDeniedException("You are not allowed to delete this excursie ");
-//        }
-//
-//        excursieRepository.delete(excursie);
-//    }
 
         public void deleteExcursie(String username, Long id) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

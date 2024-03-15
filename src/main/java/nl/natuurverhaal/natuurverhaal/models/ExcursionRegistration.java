@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import nl.natuurverhaal.natuurverhaal.models.Excursie;
 
-
 @Data
 @Entity
 @Table(name = "excursion_registration")
@@ -21,5 +20,5 @@ public class ExcursionRegistration {
     @ManyToOne
     private Excursie excursie;
 
-    // getters and setters
+    private String excursionTitle;
 }

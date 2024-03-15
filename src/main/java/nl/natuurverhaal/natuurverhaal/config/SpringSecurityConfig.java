@@ -89,7 +89,7 @@ public class SpringSecurityConfig {
                                         .requestMatchers(HttpMethod.GET, "/excursies/{username}").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/excursies").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/excursies/{username}").hasAuthority("ROLE_ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/excursies/{username}/{id}").hasAuthority("ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/excursies/{id}").hasAuthority("ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.PUT, "/excursies/{id}").hasAuthority("ROLE_ADMIN")
                                         //IMAGE
                                         .requestMatchers(HttpMethod.POST, "/image").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
@@ -113,6 +113,8 @@ public class SpringSecurityConfig {
                                         //UPVOTE
                                         .requestMatchers(HttpMethod.POST, "/upvotes").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.GET, "/blog-posts/{id}/upvotes").permitAll()
+                                         //EXCURSION REGISTRATION
+                                        .requestMatchers(HttpMethod.POST, "/registrations").permitAll()
 
                 )
 

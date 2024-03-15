@@ -30,7 +30,7 @@ public class Excursie {
         private String date;
 
 
-        @OneToMany(mappedBy = "excursie")
+        @OneToMany(mappedBy = "excursie", cascade = CascadeType.REMOVE)
         private List<ExcursionRegistration> registrations;
 
         @Lob
