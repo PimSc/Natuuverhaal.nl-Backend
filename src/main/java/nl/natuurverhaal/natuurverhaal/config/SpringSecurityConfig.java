@@ -80,10 +80,6 @@ public class SpringSecurityConfig {
                                         .requestMatchers(HttpMethod.POST, "/excursies/{username}").hasAuthority("ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.DELETE, "/excursies/{id}").hasAuthority("ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.PUT, "/excursies/{id}").hasAuthority("ROLE_ADMIN")
-                                        //IMAGE
-                                        .requestMatchers(HttpMethod.POST, "/image").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                                        .requestMatchers(HttpMethod.GET, "/image/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/image/{usename}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                                         //USERS
                                         .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
