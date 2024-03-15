@@ -1,5 +1,6 @@
 package nl.natuurverhaal.natuurverhaal.controllers;
 
+import jakarta.validation.Valid;
 import nl.natuurverhaal.natuurverhaal.dtos.UserDto;
 import nl.natuurverhaal.natuurverhaal.exceptions.BadRequestException;
 import nl.natuurverhaal.natuurverhaal.services.UserService;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto dto) {
         if (userService.userExists(dto.getUsername())) {
             throw new BadRequestException("Username is already taken");
         }
@@ -68,7 +69,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{username}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @Valid @RequestBody UserDto dto) {
         UserDto updatedUser = userService.updateUser(username, dto);
         return ResponseEntity.ok(updatedUser);
     }

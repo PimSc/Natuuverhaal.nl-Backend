@@ -20,7 +20,9 @@ public class UpvoteService {
     private final UserRepository userRepository;
     private final BlogPostRepository blogPostRepository;
 
-    // constructor
+
+
+
 
     public OutputUpvoteDto upvoteBlogPost(InputUpvoteDto inputUpvoteDto) {
         User user = userRepository.findByUsername(inputUpvoteDto.getUsername())
@@ -48,4 +50,7 @@ public class UpvoteService {
 
         return outputUpvoteDto;
     }
+
+
+
 }

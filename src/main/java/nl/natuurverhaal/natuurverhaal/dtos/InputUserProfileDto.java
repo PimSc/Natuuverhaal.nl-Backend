@@ -1,5 +1,6 @@
 package nl.natuurverhaal.natuurverhaal.dtos;
 
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,7 +9,10 @@ public class InputUserProfileDto {
     private Long id;
 
     private String email;
+
+    @Size(max=20,message="criteria not met")
     private String name;
+
     private String regio;
     private String bio;
     private MultipartFile file;

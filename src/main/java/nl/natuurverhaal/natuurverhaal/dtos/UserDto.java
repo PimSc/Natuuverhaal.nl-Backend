@@ -4,13 +4,17 @@ package nl.natuurverhaal.natuurverhaal.dtos;
 //UserDTO basisfunctionaliteit voor gebruikersbeheer
 
 
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import nl.natuurverhaal.natuurverhaal.models.Authority;
 
 import java.util.Set;
 
 public class UserDto {
 
+    @Size(max=15,min=3,message="criteria not met")
     public String username;
+    @Pattern(regexp="^(?=.*[!@#$%^&*]).{8,}$", message="criteria not met")
     public String password;
     public Boolean enabled;
     public String apikey;

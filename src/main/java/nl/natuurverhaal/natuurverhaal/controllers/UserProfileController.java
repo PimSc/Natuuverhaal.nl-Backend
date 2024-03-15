@@ -1,4 +1,5 @@
 package nl.natuurverhaal.natuurverhaal.controllers;
+import jakarta.validation.Valid;
 import nl.natuurverhaal.natuurverhaal.dtos.InputUserProfileDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputUserProfileDto;
@@ -40,8 +41,8 @@ public class UserProfileController {
 
 
     @PostMapping("/{username}")
-    public ResponseEntity<OutputUserProfileDto> createUserProfile(@RequestPart("email") String email,
-                                                            @RequestPart("name") String name,
+    public ResponseEntity<OutputUserProfileDto> createUserProfile(@Valid @RequestPart("email") String email,
+                                                                   @RequestPart("name") String name,
                                                             @RequestPart("regio") String regio,
                                                             @RequestPart("bio") String bio,
                                                             @RequestPart("file") MultipartFile file,
