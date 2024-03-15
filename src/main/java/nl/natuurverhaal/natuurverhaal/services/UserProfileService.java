@@ -23,7 +23,6 @@ public class UserProfileService {
         this.userProfileRepository = userProfileRepository;
     }
 
-
     @Transactional
     public List<OutputUserProfileDto> getAlleUserProfiles() {
         List<UserProfile> userProfileList = userProfileRepository.findAll();
@@ -45,11 +44,9 @@ public class UserProfileService {
         return outputUserProfileDtoList;
     }
 
-
     public OutputUserProfileDto createUserProfile(InputUserProfileDto inputUserProfileDto) throws IOException {
         UserProfile userProfile = new UserProfile();
 
-        // Set values from DTO to UserProfile object
         userProfile.setEmail(inputUserProfileDto.getEmail());
         userProfile.setName(inputUserProfileDto.getName());
         userProfile.setRegio(inputUserProfileDto.getRegio());
@@ -57,20 +54,14 @@ public class UserProfileService {
         userProfile.setImageData(ImageUtil.compressImage(inputUserProfileDto.getFile().getBytes()));
 
 
-        // Assuming username is provided in the DTO
         if (inputUserProfileDto.getUsername() != null) {
-            // Create a User object and set its username
             User user = new User();
             user.setUsername(inputUserProfileDto.getUsername());
-
-            // Set the User object to the UserProfile
             userProfile.setUser(user);
         }
 
-        // Save the UserProfile object to the repository
         userProfileRepository.save(userProfile);
 
-        // Create an OutputUserProfileDto and set its values from the saved UserProfile object
         OutputUserProfileDto outputUserProfileDto = new OutputUserProfileDto();
         outputUserProfileDto.setEmail(userProfile.getEmail());
         outputUserProfileDto.setName(userProfile.getName());
@@ -78,9 +69,7 @@ public class UserProfileService {
         outputUserProfileDto.setBio(userProfile.getBio());
         outputUserProfileDto.setId(userProfile.getId());
         outputUserProfileDto.setUsername(userProfile.getUser().getUsername());
-
         outputUserProfileDto.setFileContent(ImageUtil.decompressImage(userProfile.getImageData()));
-
         return outputUserProfileDto;
     }
 

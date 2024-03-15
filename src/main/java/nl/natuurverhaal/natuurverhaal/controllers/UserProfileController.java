@@ -14,7 +14,6 @@ import java.util.List;
 
 
 @RestController
-//specificeert het basispad voor alle eindpunten in deze controller.
 @RequestMapping("/user-profile")
 public class UserProfileController {
 
@@ -23,22 +22,17 @@ public class UserProfileController {
         this.userProfileService = userProfileService;
     }
 
-
     @GetMapping
     public ResponseEntity <List<OutputUserProfileDto>> getAllUserProfiles() {
         List<OutputUserProfileDto> allUserProfiles = userProfileService.getAlleUserProfiles();
         return ResponseEntity.ok(allUserProfiles);
     }
 
-
-
     @GetMapping("/{username}")
     public ResponseEntity <List<OutputUserProfileDto>> getUserProfileByUsername(@PathVariable("username") String username) {
         List<OutputUserProfileDto> userProfile = userProfileService.getUserProfileByUsername(username);
         return ResponseEntity.ok(userProfile);
     }
-
-
 
     @PostMapping("/{username}")
     public ResponseEntity<OutputUserProfileDto> createUserProfile(@Valid @RequestPart("email") String email,

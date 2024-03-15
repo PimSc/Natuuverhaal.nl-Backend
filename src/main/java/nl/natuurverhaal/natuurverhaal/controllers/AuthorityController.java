@@ -9,7 +9,6 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-//De @RequestMapping-annotatie geeft aan dat alle eindpunten in deze controller zullen beginnen met "/users"
 @RequestMapping(value = "/users")
 public class AuthorityController {
 
@@ -25,8 +24,6 @@ public class AuthorityController {
         return ResponseEntity.ok().body(authorityService.getAuthorities(username));
     }
 
-    //    Een HTTP POST-endpoint op het pad "/users/{username}/authorities". Het voegt een nieuwe autoriteit
-//    toe aan een gebruiker op basis van de opgegeven gebruikersnaam en de autoriteit in het verzoek
     @PostMapping(value = "/{username}/authorities")
     public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
         try {
@@ -38,13 +35,9 @@ public class AuthorityController {
         }
     }
 
-    //    Een HTTP DELETE-endpoint op het pad "/users/{username}/authorities/{authority}". Het verwijdert een
-//    specifieke autoriteit van een gebruiker op basis van de opgegeven gebruikersnaam en autoriteit.
     @DeleteMapping(value = "/{username}/authorities/{authority}")
     public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         authorityService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }
-
-
 }

@@ -22,7 +22,6 @@ public class ExcursionRegistrationService {
     }
 
     public OutputExcursionRegistrationDto createRegistration(InputExcursionRegistrationDto registrationDto) {
-        // Convert DTO to entity
         ExcursionRegistration excursionRegistration = new ExcursionRegistration();
         excursionRegistration.setName(registrationDto.getName());
         excursionRegistration.setEmail(registrationDto.getEmail());
@@ -33,10 +32,8 @@ public class ExcursionRegistrationService {
             excursionRegistration.setExcursionTitle(excursie.getTitle());
         }
 
-        // Save to database
         ExcursionRegistration savedExcursionRegistration = repository.save(excursionRegistration);
 
-        // Convert entity back to DTO
         OutputExcursionRegistrationDto outputDto = new OutputExcursionRegistrationDto();
         outputDto.setId(savedExcursionRegistration.getId());
         outputDto.setName(savedExcursionRegistration.getName());
@@ -47,7 +44,6 @@ public class ExcursionRegistrationService {
     }
 
     private String getExcursieTitle(Long excursieId) {
-        // Fetch the Excursie entity from the database using its ID
         Excursie excursie = excursieRepository.findById(excursieId).orElse(null);
         return (excursie != null) ? excursie.getTitle() : null;
     }

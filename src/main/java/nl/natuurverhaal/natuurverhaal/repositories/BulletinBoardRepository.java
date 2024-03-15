@@ -15,9 +15,6 @@ public interface BulletinBoardRepository extends JpaRepository<BulletinBoard, Lo
         Optional<BulletinBoard> findByIdAndUser_Username(Long id, String username);
 
         Optional<List<BulletinBoard>> findByUser_Username(String username);
-
-//    Optional<List<BulletinBoard>> getAllBulletinBoards();
-
     }
 
 

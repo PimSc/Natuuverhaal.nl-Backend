@@ -14,11 +14,8 @@ public class ExcursionRegistration {
     private Long id;
 
     private String name;
-
     private String email;
-
     @ManyToOne
     private Excursie excursie;
-
     private String excursionTitle;
 }

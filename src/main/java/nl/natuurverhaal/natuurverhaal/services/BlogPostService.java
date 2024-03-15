@@ -2,6 +2,7 @@ package nl.natuurverhaal.natuurverhaal.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import nl.natuurverhaal.natuurverhaal.controllers.ExceptionController;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.models.BlogPost;
@@ -64,7 +65,6 @@ public class BlogPostService {
             blogPost.setUser(user);
         }
 
-
         blogPostRepository.save(blogPost);
         OutputBlogpostDto outputBlogpostDto = new OutputBlogpostDto();
 
@@ -79,7 +79,6 @@ public class BlogPostService {
         outputBlogpostDto.setFileContent(ImageUtil.decompressImage(blogPost.getImageData()));
         return outputBlogpostDto;
     }
-
 
     @Transactional
     public OutputBlogpostDto getBlogPost(String username, Long id) {
@@ -103,7 +102,6 @@ public class BlogPostService {
     @Transactional
     public List<OutputBlogpostDto> getAllBlogs() {
         List<BlogPost> blogPostList = blogPostRepository.findAll();
-
         List<OutputBlogpostDto> outputBlogpostDtoList = new ArrayList<>();
 
         for (BlogPost blogPost : blogPostList) {
@@ -123,21 +121,26 @@ public class BlogPostService {
         return outputBlogpostDtoList;
     }
 
-
-    public BlogPost updateBlogPost(Long id, InputBlogpostDto inputBlogpostDto) throws IOException {
-
+    public void updateBlogPost(Long id, InputBlogpostDto blogPostDto) throws IOException {
+        // Fetch the BlogPost entity from the database
         BlogPost blogPost = blogPostRepository.findById(id)
+                .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("Blog post not found"));
 
-                .orElseThrow(() -> new EntityNotFoundException("Blog post not found with id " + id));
-        blogPost.setCaption(inputBlogpostDto.getCaption());
-        blogPost.setContent(inputBlogpostDto.getContent());
-        blogPost.setSubtitle(inputBlogpostDto.getSubtitle());
-        blogPost.setTitle(inputBlogpostDto.getTitle());
-        blogPost.setImageData(inputBlogpostDto.getFile().getBytes());
-        blogPost.setImageData(ImageUtil.compressImage(inputBlogpostDto.getFile().getBytes()));
-        blogPost.setDate(inputBlogpostDto.getDate());
-        blogPost.setCategories(inputBlogpostDto.getCategories());
-        return blogPostRepository.save(blogPost);
+        if (blogPostDto.getFile() != null) {
+            blogPost.setImageData(ImageUtil.compressImage(blogPostDto.getFile().getBytes()));
+        }
+
+        blogPost.setCaption(blogPostDto.getCaption());
+        blogPost.setTitle(blogPostDto.getTitle());
+        blogPost.setSubtitle(blogPostDto.getSubtitle());
+        blogPost.setContent(blogPostDto.getContent());
+
+        User user = userRepository.findById(blogPostDto.getUsername())
+                .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("User not found"));
+        blogPost.setUser(user);
+        blogPost.setDate(blogPostDto.getDate());
+        blogPost.setCategories(blogPostDto.getCategories());
+        blogPostRepository.save(blogPost);
     }
 
 
@@ -166,22 +169,6 @@ public class BlogPostService {
 
     private static final Logger logger = LoggerFactory.getLogger(BlogPostService.class);
 
-
-//    @PreAuthorize("#username == authentication.principal.username.auth or hasRole('ROLE_ADMIN')")
-//    public void deleteBlogPost(String username, Long id) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        logger.info("Authenticated user: " + authentication.getName());
-//        logger.info("Authorities: " + authentication.getAuthorities());
-//        BlogPost blogPost = blogPostRepository.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Blog post not found"));
-//
-//        if (!blogPost.getUser().getUsername().equals(username)) {
-//            throw new AccessDeniedException("You are not allowed to delete this blog post");
-//        }
-//
-//        blogPostRepository.delete(blogPost);
-//    }
-
     public void deleteBlogPost(String username, Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -198,8 +185,5 @@ public class BlogPostService {
             throw new AccessDeniedException("You are not allowed to delete this blog post");
         }
     }
-
-
-
 }
 

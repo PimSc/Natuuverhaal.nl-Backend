@@ -44,15 +44,11 @@ public class ExcursieController {
             return ResponseEntity.ok(excursie);
         }
 
-
         @GetMapping
         public ResponseEntity<List<OutputExcursieDto>> getAllExcursies() {
             List<OutputExcursieDto> excursie = excursieService.getAllExcursies();
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(excursie);
         }
-
-
-
 
         @PostMapping("/{username}")
         public ResponseEntity<OutputExcursieDto> createExcursie(@RequestPart("file") MultipartFile file,
@@ -74,10 +70,6 @@ public class ExcursieController {
             LocalDateTime currentDateAndTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
             String formattedDateTime = currentDateAndTime.format(formatter);
-
-            System.out.println("file: " + file);
-            System.out.println("username: " + username);
-            System.out.println("caption: " + caption);
 
             InputExcursieDto excursie = new InputExcursieDto();
             excursie.setFile(file);
@@ -117,14 +109,9 @@ public class ExcursieController {
                                                @RequestPart("subject") String subject,
                                                @RequestPart("content") String content)
             throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         LocalDateTime currentDateAndTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDateTime = currentDateAndTime.format(formatter);
-
-        System.out.println("file: " + file);
-        System.out.println("username: " + username);
-        System.out.println("caption: " + caption);
 
         InputExcursieDto excursie = new InputExcursieDto();
         excursie.setCaption(caption);

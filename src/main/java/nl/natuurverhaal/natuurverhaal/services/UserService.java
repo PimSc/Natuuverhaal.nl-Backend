@@ -18,7 +18,6 @@ public class UserService {
 
     public PasswordEncoder passwordEncoder;
 
-    //    De constructor injecteert een instantie van UserRepository
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -39,7 +38,6 @@ public class UserService {
         return collection;
     }
 
-    //    Haalt een specifieke gebruiker op basis van de gebruikersnaam en converteert deze naar een UserDto
     public UserDto getUser(String username) {
         UserDto dto = new UserDto();
         Optional<User> user = userRepository.findById(username);
@@ -51,7 +49,6 @@ public class UserService {
         return dto;
     }
 
-    //    Genereert een willekeurige API-sleutel, stelt deze in op de UserDto en slaat een nieuwe gebruiker op in de database. Geeft de gebruikersnaam van de aangemaakte gebruiker terug.
     public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
         userDto.setApikey(randomString);
@@ -59,27 +56,20 @@ public class UserService {
         return newUser.getUsername();
     }
 
-    //    Verwijdert een gebruiker op basis van de gebruikersnaam.
     public void deleteUser(String username) {
         userRepository.deleteById(username);
     }
 
 
     public UserDto updateUser(String username, UserDto dto) {
-        // Fetch the user from the database
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with username " + username));
 
-        // Update the user fields
         user.setEmail(dto.getEmail());
         user.setUsername(dto.getUsername());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-
-        // Save the updated user back to the database
         User updatedUser = userRepository.save(user);
 
-        // Convert the updated User entity to UserDto and return it
         UserDto updatedUserDto = convertToDto(updatedUser);
         return updatedUserDto;
     }
@@ -95,12 +85,9 @@ public class UserService {
         return userDto;
     }
 
-
-    //    Zet een User-object om naar een UserDto
     public static UserDto fromUser(User user) {
 
         var dto = new UserDto();
-
 
         dto.username = user.getUsername();
         dto.password = user.getPassword();
@@ -112,19 +99,16 @@ public class UserService {
         return dto;
     }
 
-    //    Zet een UserDto-object om naar een User.
     public User toUser(UserDto userDto) {
 
         var user = new User();
 
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.password));
-//        user.setPassword(userDto.getPassword());
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
 
         return user;
     }
-
 }

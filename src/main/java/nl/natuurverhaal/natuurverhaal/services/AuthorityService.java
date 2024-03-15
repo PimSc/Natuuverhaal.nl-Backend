@@ -13,9 +13,6 @@ import static nl.natuurverhaal.natuurverhaal.services.UserService.fromUser;
 
 @Service
 public class AuthorityService {
-//    Haalt de rollen (authorities) van een gebruiker op basis van de gebruikersnaam. Gooit een
-
-
 
     UserRepository userRepository;
 
@@ -30,7 +27,6 @@ public Set<Authority> getAuthorities(String username) {
     return userDto.getAuthorities();
 }
 
-//    Voegt een nieuwe autoriteit (rol) toe aan een gebruiker.
 public void addAuthority(String username, String authority) {
 
     if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
@@ -39,7 +35,6 @@ public void addAuthority(String username, String authority) {
     userRepository.save(user);
 }
 
-//    Verwijdert een autoriteit van een gebruiker op basis van de gebruikersnaam en autoriteit.
 public void removeAuthority(String username, String authority) {
     if (!userRepository.existsById(username)) throw new UsernameNotFoundException(username);
     User user = userRepository.findById(username).get();

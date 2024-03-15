@@ -8,6 +8,7 @@ import java.util.Set;
 
 @Data
 public class InputBlogpostDto {
+
     private Long id;
 
     private String title;

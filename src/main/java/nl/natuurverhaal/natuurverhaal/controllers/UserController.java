@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-//@CrossOrigin Geeft aan dat Cross-Origin Resource Sharing (CORS) is ingeschakeld,
+
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/users")

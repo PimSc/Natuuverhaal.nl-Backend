@@ -75,10 +75,6 @@ public class BlogPostController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDateTime = currentDateAndTime.format(formatter);
 
-        System.out.println("file: " + file);
-        System.out.println("username: " + username);
-        System.out.println("caption: " + caption);
-
         InputBlogpostDto blogPost = new InputBlogpostDto();
         blogPost.setCaption(caption);
         blogPost.setTitle(title);
@@ -104,17 +100,12 @@ public class BlogPostController {
                                                @RequestPart("content") String content,
                                                @RequestPart("categories") String categoriesJson)
             throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         Set<Category> categories = new HashSet<>();
         Category c1 = Category.valueOf(categoriesJson);
         categories.add(c1);
         LocalDateTime currentDateAndTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDateTime = currentDateAndTime.format(formatter);
-
-        System.out.println("file: " + file);
-        System.out.println("username: " + username);
-        System.out.println("caption: " + caption);
 
         InputBlogpostDto blogPost = new InputBlogpostDto();
         blogPost.setCaption(caption);
@@ -130,8 +121,6 @@ public class BlogPostController {
         return ResponseEntity.noContent().build();
     }
 
-
-
     @DeleteMapping("/{username}/{id}")
     public ResponseEntity<Void> deleteBlogPost(@PathVariable("username") String username, @PathVariable("id") Long id) {
         blogPostService.deleteBlogPost(username, id);
@@ -142,7 +131,6 @@ public class BlogPostController {
     public ResponseEntity<Integer> getUpvoteCount(@PathVariable Long id) {
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("Blog post not found"));
-
         return ResponseEntity.ok(blogPost.getUpvotes());
     }
 }

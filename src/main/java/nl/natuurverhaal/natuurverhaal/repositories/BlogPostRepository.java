@@ -12,9 +12,6 @@ public interface BlogPostRepository extends JpaRepository<BlogPost, Long> {
     Optional<BlogPost> findByIdAndUser_Username(Long id, String username);
 
     Optional<List<BlogPost>> findByUser_Username(String username);
-
-//    Optional<List<BlogPost>> getAllBlogs();
-
 }
 
 

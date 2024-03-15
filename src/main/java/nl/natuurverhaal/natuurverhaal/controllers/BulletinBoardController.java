@@ -26,7 +26,6 @@ public class BulletinBoardController {
             this.bulletinBoardService = bulletinBoardService;
         }
 
-
         @GetMapping("/{username}/{id}")
     public ResponseEntity<OutputBulletinBoardDto> getBulletinBoard(@PathVariable("username") String username, @PathVariable("id") Long id) {
         OutputBulletinBoardDto bulletinBoard = bulletinBoardService.getBulletinBoard(username, id);
@@ -39,15 +38,11 @@ public class BulletinBoardController {
         return ResponseEntity.ok(bulletinBoard);
     }
 
-
     @GetMapping
     public ResponseEntity<List<OutputBulletinBoardDto>> getAllBulletinBoards() {
         List<OutputBulletinBoardDto> bulletinBoard = bulletinBoardService.getAllBulletinBoards();
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(bulletinBoard);
     }
-
-
-
 
     @PostMapping("/{username}")
     public ResponseEntity<OutputBulletinBoardDto> createBulletinBoard(@RequestPart("file") MultipartFile file,
@@ -56,14 +51,9 @@ public class BulletinBoardController {
                                                             @RequestPart("title") String title,
                                                             @RequestPart("content") String content)
             throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
         LocalDateTime currentDateAndTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDateTime = currentDateAndTime.format(formatter);
-
-        System.out.println("file: " + file);
-        System.out.println("username: " + username);
-        System.out.println("caption: " + caption);
 
         InputBulletinBoardDto bulletinBoard = new InputBulletinBoardDto();
         bulletinBoard.setCaption(caption);
@@ -75,8 +65,6 @@ public class BulletinBoardController {
         OutputBulletinBoardDto createdBulletinBoard = bulletinBoardService.createBulletinBoard(bulletinBoard);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBulletinBoard);
     }
-
-
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateBulletinBoard(@PathVariable("id") Long id,
@@ -90,10 +78,6 @@ public class BulletinBoardController {
         LocalDateTime currentDateAndTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         String formattedDateTime = currentDateAndTime.format(formatter);
-
-        System.out.println("file: " + file);
-        System.out.println("username: " + username);
-        System.out.println("caption: " + caption);
 
         InputBulletinBoardDto bulletinBoard = new InputBulletinBoardDto();
         bulletinBoard.setCaption(caption);

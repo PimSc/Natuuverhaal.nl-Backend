@@ -2,6 +2,7 @@ package nl.natuurverhaal.natuurverhaal.services;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import nl.natuurverhaal.natuurverhaal.controllers.ExceptionController;
 import nl.natuurverhaal.natuurverhaal.dtos.InputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.InputExcursieDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputExcursieDto;
@@ -132,28 +133,40 @@ public class ExcursieService {
             return outputExcursieDto;
         }
 
-    public Excursie updateExcursie(Long id, InputExcursieDto inputExcursieDto) throws IOException {
+  public void updateExcursie(Long id, InputExcursieDto excursieDto) throws IOException {
+    // Fetch the Excursie entity from the database
+    Excursie excursie = excursieRepository.findById(id)
+            .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("Excursie not found"));
 
-        Excursie excursie = excursieRepository.findById(id)
-
-                .orElseThrow(() -> new EntityNotFoundException("Excursion not found with id " + id));
-        excursie.setCaption(inputExcursieDto.getCaption());
-        excursie.setContent(inputExcursieDto.getContent());
-        excursie.setSubtitle(inputExcursieDto.getSubtitle());
-        excursie.setTitle(inputExcursieDto.getTitle());
-        excursie.setImageData(inputExcursieDto.getFile().getBytes());
-        excursie.setImageData(ImageUtil.compressImage(inputExcursieDto.getFile().getBytes()));
-        excursie.setDate(inputExcursieDto.getDate());
-        excursie.setActivity_date(inputExcursieDto.getActivity_date());
-        excursie.setActivity_time(inputExcursieDto.getActivity_time());
-        excursie.setPrice(inputExcursieDto.getPrice());
-        excursie.setLocation(inputExcursieDto.getLocation());
-        excursie.setSubject(inputExcursieDto.getSubject());
-        excursie.setGuide(inputExcursieDto.getGuide());
-        excursie.setMax_participants(inputExcursieDto.getMax_participants());
-        return excursieRepository.save(excursie);
-
+    // Check if the file from the InputExcursieDto is null
+    if (excursieDto.getFile() != null) {
+        // If the file is not null, update the imageData field of the Excursie entity
+        excursie.setImageData(ImageUtil.compressImage(excursieDto.getFile().getBytes()));
     }
+
+    // Update the other fields of the Excursie entity
+    excursie.setCaption(excursieDto.getCaption());
+    excursie.setTitle(excursieDto.getTitle());
+    excursie.setSubtitle(excursieDto.getSubtitle());
+    excursie.setContent(excursieDto.getContent());
+
+    // Fetch the User entity from the database
+    User user = userRepository.findById(excursieDto.getUsername())
+            .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("User not found"));
+    excursie.setUser(user);
+
+    excursie.setDate(excursieDto.getDate());
+    excursie.setActivity_date(excursieDto.getActivity_date());
+    excursie.setActivity_time(excursieDto.getActivity_time());
+    excursie.setPrice(excursieDto.getPrice());
+    excursie.setLocation(excursieDto.getLocation());
+    excursie.setSubject(excursieDto.getSubject());
+    excursie.setGuide(excursieDto.getGuide());
+    excursie.setMax_participants(excursieDto.getMax_participants());
+
+    // Save the updated Excursie entity back to the database
+    excursieRepository.save(excursie);
+}
 
         @Transactional
         public List<OutputExcursieDto> getAllExcursies() {

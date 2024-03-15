@@ -6,13 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class InputUserProfileDto {
+
     private Long id;
 
     private String email;
-
-    @Size(max=20,message="criteria not met")
+    @Size(max=20,message="voldoet niet aan de criteria")
     private String name;
-
     private String regio;
     private String bio;
     private MultipartFile file;

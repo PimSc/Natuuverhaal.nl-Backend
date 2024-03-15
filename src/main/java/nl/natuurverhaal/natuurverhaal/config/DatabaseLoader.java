@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
                     Authority adminAuthority = new Authority();
                     adminAuthority.setAuthority("ROLE_ADMIN");
-                    adminAuthority.setUsername(admin.getUsername()); // Set the username to the authority
+                    adminAuthority.setUsername(admin.getUsername());
                     admin.getAuthorities().add(adminAuthority);
 
                     userRepository.save(admin);
@@ -33,7 +33,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
                     Authority adminAuthority = new Authority();
                     adminAuthority.setAuthority("ROLE_USER");
-                    adminAuthority.setUsername(user.getUsername()); // Set the username to the authority
+                    adminAuthority.setUsername(user.getUsername());
                     user.getAuthorities().add(adminAuthority);
 
                     userRepository.save(user);

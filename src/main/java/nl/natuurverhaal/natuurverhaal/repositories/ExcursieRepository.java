@@ -15,7 +15,6 @@ public interface ExcursieRepository extends JpaRepository<Excursie, Long>{
 
         Optional<List<Excursie>> findByUser_Username(String username);
 
-//    Optional<List<Excursie>> getAllExcursies();
 
     }
 
