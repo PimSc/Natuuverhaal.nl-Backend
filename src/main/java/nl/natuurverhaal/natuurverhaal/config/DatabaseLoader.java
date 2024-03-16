@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     User admin = new User();
                     admin.setUsername("Testadmin");
                     admin.setPassword(passwordEncoder.encode("12345678%"));
+                    admin.setEmail("Testadmin@test.com");
 
                     Authority adminAuthority = new Authority();
                     adminAuthority.setAuthority("ROLE_ADMIN");
@@ -30,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                     User user = new User();
                     user.setUsername("Testgebruiker");
                     user.setPassword(passwordEncoder.encode("12345678%"));
+                    user.setEmail("Testuser@test.com");
 
                     Authority adminAuthority = new Authority();
                     adminAuthority.setAuthority("ROLE_USER");

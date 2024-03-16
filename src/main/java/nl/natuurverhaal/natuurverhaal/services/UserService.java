@@ -67,7 +67,12 @@ public class UserService {
 
         user.setEmail(dto.getEmail());
         user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        // Check if the password field in the incoming UserDto is null or empty
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
+
         User updatedUser = userRepository.save(user);
 
         UserDto updatedUserDto = convertToDto(updatedUser);
