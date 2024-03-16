@@ -133,10 +133,6 @@ public class ExcursieController {
         return ResponseEntity.noContent().build();
     }
 
-
-
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExcursie(@PathVariable Long id) {
         excursieService.deleteExcursie(id);
