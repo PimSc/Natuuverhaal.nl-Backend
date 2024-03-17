@@ -126,6 +126,15 @@ public class BlogPostService {
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("Blog post not found"));
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+
+        // Check if the current user is the owner of the blog post or has the ROLE_ADMIN role
+        if (!blogPost.getUser().getUsername().equals(currentUsername) && !authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
+            throw new AccessDeniedException("You are not allowed to edit this blog post");
+        }
+
         if (blogPostDto.getFile() != null) {
             blogPost.setImageData(ImageUtil.compressImage(blogPostDto.getFile().getBytes()));
         }
@@ -142,7 +151,6 @@ public class BlogPostService {
         blogPost.setCategories(blogPostDto.getCategories());
         blogPostRepository.save(blogPost);
     }
-
 
     @Transactional
     public List<OutputBlogpostDto> getBlogPostByUsername(String username) {
@@ -168,6 +176,7 @@ public class BlogPostService {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(BlogPostService.class);
+
 
     public void deleteBlogPost(String username, Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

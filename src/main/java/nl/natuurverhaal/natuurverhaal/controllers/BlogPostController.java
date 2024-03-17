@@ -131,7 +131,7 @@ public class BlogPostController {
     public ResponseEntity<Integer> getUpvoteCount(@PathVariable Long id) {
         BlogPost blogPost = blogPostRepository.findById(id)
                 .orElseThrow(() -> new ExceptionController.ResourceNotFoundException("Blog post not found"));
-        return ResponseEntity.ok(blogPost.getUpvotes());
+        return ResponseEntity.ok(blogPost.getUpvoteCount());
     }
 }
 
