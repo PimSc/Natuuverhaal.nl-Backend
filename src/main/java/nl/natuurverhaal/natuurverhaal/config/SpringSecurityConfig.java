@@ -20,9 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/*  Deze security is niet de enige manier om het te doen.
-    In de andere branch van deze github repo staat een ander voorbeeld
- */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
@@ -36,15 +33,11 @@ public class SpringSecurityConfig {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
-    // PasswordEncoderBean. Deze kun je overal in je applicatie injecteren waar nodig.
-    // Je kunt dit ook in een aparte configuratie klasse zetten.
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-    // Authenticatie met customUserDetailsService en passwordEncoder
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
         var auth = new DaoAuthenticationProvider();
@@ -53,8 +46,6 @@ public class SpringSecurityConfig {
         return new ProviderManager(auth);
     }
 
-
-    // Authorizatie met jwt
     @Bean
     protected SecurityFilterChain filter(HttpSecurity http) throws Exception {
 
@@ -64,7 +55,7 @@ public class SpringSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
                                 auth
-                                        // Wanneer je deze uncomment, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
+
 //                                        .requestMatchers("/**").permitAll()
 
                                         //AUTHENTICATED
@@ -89,12 +80,8 @@ public class SpringSecurityConfig {
                                         .requestMatchers(HttpMethod.GET, "/excursies/{username}").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/excursies").permitAll()
                                         .requestMatchers(HttpMethod.POST, "/excursies/{username}").hasAuthority("ROLE_ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/excursies/{username}/{id}").hasAuthority("ROLE_ADMIN")
+                                        .requestMatchers(HttpMethod.DELETE, "/excursies/{id}").hasAuthority("ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.PUT, "/excursies/{id}").hasAuthority("ROLE_ADMIN")
-                                        //IMAGE
-                                        .requestMatchers(HttpMethod.POST, "/image").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                                        .requestMatchers(HttpMethod.GET, "/image/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/image/{usename}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                                         //USERS
                                         .requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.GET, "/users/{username}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
@@ -113,7 +100,8 @@ public class SpringSecurityConfig {
                                         //UPVOTE
                                         .requestMatchers(HttpMethod.POST, "/upvotes").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                                         .requestMatchers(HttpMethod.GET, "/blog-posts/{id}/upvotes").permitAll()
-
+                                        //EXCURSION REGISTRATION
+                                        .requestMatchers(HttpMethod.POST, "/registrations").permitAll()
                 )
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

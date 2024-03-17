@@ -2,6 +2,8 @@ package nl.natuurverhaal.natuurverhaal.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import nl.natuurverhaal.natuurverhaal.models.ExcursionRegistration;
+import java.util.List;
 
 @Data
 @Entity
@@ -11,7 +13,6 @@ public class Excursie {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
-
 
         private String title;
         private String caption;
@@ -27,6 +28,10 @@ public class Excursie {
         private String name;
         private String type;
         private String date;
+
+
+        @OneToMany(mappedBy = "excursie", cascade = CascadeType.REMOVE)
+        private List<ExcursionRegistration> registrations;
 
         @Lob
         private byte[] imageData;

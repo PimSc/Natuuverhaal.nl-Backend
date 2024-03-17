@@ -14,5 +14,6 @@ public class Upvote {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "blog_post_id", nullable = false)
     private BlogPost blogPost;
 }

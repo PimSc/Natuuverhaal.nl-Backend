@@ -1,4 +1,5 @@
 package nl.natuurverhaal.natuurverhaal.controllers;
+import jakarta.validation.Valid;
 import nl.natuurverhaal.natuurverhaal.dtos.InputUserProfileDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputBlogpostDto;
 import nl.natuurverhaal.natuurverhaal.dtos.OutputUserProfileDto;
@@ -13,7 +14,6 @@ import java.util.List;
 
 
 @RestController
-//specificeert het basispad voor alle eindpunten in deze controller.
 @RequestMapping("/user-profile")
 public class UserProfileController {
 
@@ -22,14 +22,11 @@ public class UserProfileController {
         this.userProfileService = userProfileService;
     }
 
-
     @GetMapping
     public ResponseEntity <List<OutputUserProfileDto>> getAllUserProfiles() {
         List<OutputUserProfileDto> allUserProfiles = userProfileService.getAlleUserProfiles();
         return ResponseEntity.ok(allUserProfiles);
     }
-
-
 
     @GetMapping("/{username}")
     public ResponseEntity <List<OutputUserProfileDto>> getUserProfileByUsername(@PathVariable("username") String username) {
@@ -37,11 +34,9 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfile);
     }
 
-
-
     @PostMapping("/{username}")
-    public ResponseEntity<OutputUserProfileDto> createUserProfile(@RequestPart("email") String email,
-                                                            @RequestPart("name") String name,
+    public ResponseEntity<OutputUserProfileDto> createUserProfile(@Valid @RequestPart("email") String email,
+                                                                   @RequestPart("name") String name,
                                                             @RequestPart("regio") String regio,
                                                             @RequestPart("bio") String bio,
                                                             @RequestPart("file") MultipartFile file,

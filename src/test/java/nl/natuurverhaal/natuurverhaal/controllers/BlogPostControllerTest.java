@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
@@ -75,6 +76,7 @@ class BlogPostControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     void createBlogPost() throws Exception {
         InputBlogpostDto blogPost = new InputBlogpostDto();
         blogPost.setUsername("testUsername");
@@ -104,6 +106,7 @@ class BlogPostControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     void updateBlogPost() throws Exception {
         InputBlogpostDto blogPost = new InputBlogpostDto();
         blogPost.setUsername("testUsername");
@@ -141,8 +144,16 @@ class BlogPostControllerTest {
     }
 
     @Test
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
     void deleteBlogPost() throws Exception {
         mockMvc.perform(delete("/blog-posts/testUsername/1"))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    void getUpvoteCount() throws Exception {
+        mockMvc.perform(get("/blog-posts/upvotes"))
+                .andExpect(status().isOk());
     }
 }

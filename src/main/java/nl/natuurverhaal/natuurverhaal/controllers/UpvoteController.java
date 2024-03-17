@@ -26,4 +26,5 @@ public class UpvoteController {
         OutputUpvoteDto outputUpvoteDto = upvoteService.upvoteBlogPost(inputUpvoteDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(outputUpvoteDto);
     }
+
 }

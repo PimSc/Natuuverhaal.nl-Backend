@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import nl.natuurverhaal.natuurverhaal.utils.Category;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,10 +25,13 @@ public class BlogPost {
     private String type;
     private String date;
 
-    private int upvotes = 0;
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Upvote> upvoteList = new ArrayList<>();
+
+    private int upvoteCount = 0;
 
     public void incrementUpvotes() {
-        this.upvotes++;
+        this.upvoteCount++;
     }
 
     @Lob
@@ -45,4 +50,7 @@ public class BlogPost {
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Upvote> upvotes = new HashSet<>();
 }

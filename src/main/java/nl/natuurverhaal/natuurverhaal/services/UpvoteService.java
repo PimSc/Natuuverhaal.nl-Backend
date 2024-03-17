@@ -20,8 +20,6 @@ public class UpvoteService {
     private final UserRepository userRepository;
     private final BlogPostRepository blogPostRepository;
 
-    // constructor
-
     public OutputUpvoteDto upvoteBlogPost(InputUpvoteDto inputUpvoteDto) {
         User user = userRepository.findByUsername(inputUpvoteDto.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -37,7 +35,6 @@ public class UpvoteService {
         upvote.setBlogPost(blogPost);
         upvote = upvoteRepository.save(upvote);
 
-        // Increment the upvotes field of the blog post
         blogPost.incrementUpvotes();
         blogPostRepository.save(blogPost);
 
@@ -48,4 +45,7 @@ public class UpvoteService {
 
         return outputUpvoteDto;
     }
+
+
+
 }
